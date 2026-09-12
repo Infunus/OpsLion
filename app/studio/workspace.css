@@ -1,0 +1,42 @@
+/* OpsLion visual system. Article export styles are defined separately in renderer.ts. */
+@import "./design-system.css";
+@import "./design-editor.css";
+@import "./design-overlays.css";
+@import "./design-weekly.css";
+@import "./design-responsive.css";
+@import "./template-library.css";
+@import "./design-motion.css";
+@import "./submission/submission.css";
+@import "./canvas/canvas.css";
+@import "./workflow/workflow.css";
+@import "./weekly-template/weekly-template.css";
+
+/* Submission corrections keep source, decisions and output visible together. */
+.submission-target { padding:14px 16px; background:var(--surface-soft,#f2f5ef); border-radius:10px; }
+.submission-target span { display:block; margin-top:6px; font-size:12px; }
+.submission-file { gap:8px; flex-wrap:wrap; }
+.submission-file > span { flex:1; min-width:180px; }
+.submission-file small { display:block; }
+.submission-body select,.unplaced-content select,.inspector-section select { max-width:100%; padding:8px; border:1px solid var(--border,#d9ded5); background:var(--surface,#fff); color:inherit; border-radius:7px; }
+.content-review { margin-top:22px; }
+.review-row { padding:14px 0; border-top:1px solid var(--border,#d9ded5); }
+.review-row > header { display:flex; align-items:center; gap:10px; padding:0 0 12px; }
+.review-row > header > span { color:var(--muted,#6a7268); flex:1; font-size:12px; overflow-wrap:anywhere; }
+.review-columns { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; }
+.review-columns > div { padding:12px; border-radius:8px; background:var(--surface-soft,#f6f7f4); min-width:0; }
+.review-content { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.75; }
+.review-content img { display:block; max-width:100%; max-height:160px; object-fit:contain; margin:8px 0; }
+.review-rich { line-height:1.8; white-space:pre-wrap; }
+.review-link { display:block; overflow-wrap:anywhere; color:var(--muted,#65785c); margin-top:8px; }
+.submission-image-binding { display:grid; grid-template-columns:110px minmax(0,1fr); gap:18px; padding:16px 0; border-top:1px solid var(--border,#e0e4dc); }
+.submission-image-binding .review-content img { width:110px; }
+.submission-layout-preview { width:390px; max-width:100%; margin:18px auto; background:#fff; }
+.unplaced-content { padding:16px; border:1px solid #dfae75; border-radius:10px; background:var(--surface,#fff); margin-bottom:18px; }
+.unplaced-content h3 { margin:0; }
+.unplaced-content article { margin:14px 0; border-top:1px solid var(--border,#deded5); padding-top:10px; }
+.unplaced-content input { width:100%; box-sizing:border-box; padding:10px; }
+.export-steps { padding:8px 32px 14px 48px; margin:0; font-size:13px; line-height:1.9; color:var(--muted,#65705f); }
+.export-grid button:disabled { opacity:.48; cursor:default; }
+.rich-link-editor { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+.rich-link-editor input { flex:1; min-width:120px; padding:7px; }
+@media (max-width:650px) { .review-columns { grid-template-columns:1fr; } .review-row > header { flex-wrap:wrap; } .submission-file { align-items:flex-start; } }

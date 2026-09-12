@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Xiumi Bridge</title>
+  <link rel="icon" type="image/png" href="icon32.png">
+  <style>
+    *{box-sizing:border-box}body{width:350px;margin:0;padding:18px;background:#f4f5f1;color:#20231f;font-family:Arial,"Microsoft YaHei",sans-serif}.brand{display:flex;align-items:center;gap:10px;margin-bottom:15px}.mark{width:36px;height:36px;flex:none;background:currentColor;mask:url("icon128.png") center/contain no-repeat}.brand strong{display:block;font-size:14px}.brand span{display:block;margin-top:3px;color:#858a82;font-size:9px}.card{padding:14px;border:1px solid #e0e2dc;border-radius:12px;background:#fff}.card+.card{margin-top:10px}.section-label{margin:0 0 8px;color:#8a8f87;font-size:8px;font-weight:800;letter-spacing:.14em}.status{min-height:34px;margin:0 0 10px;color:#70766d;font-size:10px;line-height:1.6}.button{display:block;width:100%;margin-top:8px;padding:10px;border:0;border-radius:9px;background:#20231f;color:#fff;font-size:11px;font-weight:700;cursor:pointer}.button.secondary{background:#e9ece6;color:#40463f}.button.accent{background:#5d7664}.button:disabled{opacity:.38;cursor:not-allowed}.button-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.file{display:block;padding:10px;border:1px dashed #cfd3ca;border-radius:9px;text-align:center;color:#687067;font-size:10px;cursor:pointer}.file input{display:none}.capture-meta{display:none;margin:9px 0 0;padding:8px;border-radius:8px;background:#f2f5f1;color:#617066;font-size:9px;line-height:1.55}.capture-meta.visible{display:block}.hint{margin:12px 2px 0;color:#92978e;font-size:9px;line-height:1.6}.ok{color:#3f7658}.error{color:#ae5548}
+  </style>
+</head>
+<body>
+  <div class="brand"><div class="mark" aria-hidden="true"></div><div><strong>Xiumi Bridge</strong><span>BIDIRECTIONAL · 0.4.1</span></div></div>
+  <div class="card">
+    <p class="section-label">抓取当前排版 → OPSLION</p>
+    <p id="captureStatus" class="status">支持秀米编辑页和已发布的微信公众号文章。</p>
+    <button id="capture" class="button accent">抓取当前页面排版</button>
+    <p id="captureMeta" class="capture-meta"></p>
+    <div class="button-row">
+      <button id="send" class="button" disabled>发送到 OpsLion</button>
+      <button id="download" class="button secondary" disabled>下载模板包</button>
+    </div>
+  </div>
+  <div class="card">
+    <p class="section-label">OPSLION → 秀米</p>
+    <p id="status" class="status">导入运营狮生成的 .xiumi.json，或直接读取富文本剪贴板。</p>
+    <label class="file">选择 Bridge 数据包<input id="file" type="file" accept=".json,.xiumi.json"></label>
+    <button id="clipboard" class="button secondary">读取当前剪贴板</button>
+    <button id="insert" class="button">分模块导入空白图文</button>
+    <button id="replace" class="button secondary">校验并原位更新</button>
+    <button id="verify" class="button secondary">检查保存后重开的稿件</button>
+  </div>
+  <p class="hint">抓取会保留正文结构和必要样式，但伪元素、受保护图片与编辑器私有组件仍需人工复核。发送前请先启动 OpsLion。</p>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+@import "tailwindcss";
+:root {
+  --font-geist-mono: ui-monospace, Consolas;
+}

@@ -1,0 +1,47 @@
+{
+  "name": "opslion",
+  "version": "0.3.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "vinext dev",
+    "build": "vinext build",
+    "start": "vinext start",
+    "test": "npm run test:browser && node --test tests/artifacts.test.mjs tests/startup.test.mjs && python -m unittest discover -s tests -p \"*_test.py\"",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "test:browser": "npm run build && playwright test"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.15",
+    "jszip": "3.10.1",
+    "mammoth": "^1.12.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "@next/eslint-plugin-next": "16.2.6",
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/postcss": "4.2.1",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "^6.0.5",
+    "@vitejs/plugin-rsc": "^0.5.34",
+    "eslint": "9.39.4",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "16.4.0",
+    "react-server-dom-webpack": "^19.2.8",
+    "tailwindcss": "4.2.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.59.3",
+    "vinext": "^1.0.0-beta.7",
+    "vite": "^8.2.1"
+  },
+  "type": "module"
+}

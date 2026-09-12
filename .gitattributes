@@ -1,0 +1,2 @@
+# Windows cmd.exe launchers require CRLF, including when cloned with core.autocrlf=false.
+*.bat text eol=crlf

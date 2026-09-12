@@ -1,0 +1,13 @@
+[
+  {"name":"legal variant", "valid":true, "decisions":[{"kind":"component_variant","nodeId":"p","componentId":"body-other"}]},
+  {"name":"legal pair", "valid":true, "decisions":[{"kind":"image_group","nodeIds":["i1","i2"]}]},
+  {"name":"unknown target", "valid":false, "decisions":[{"kind":"component_variant","nodeId":"absent","componentId":"body-other"}]},
+  {"name":"unknown component", "valid":false, "decisions":[{"kind":"component_variant","nodeId":"p","componentId":"absent"}]},
+  {"name":"reversed pair", "valid":false, "decisions":[{"kind":"image_group","nodeIds":["i2","i1"]}]},
+  {"name":"repeated image", "valid":false, "decisions":[{"kind":"image_group","nodeIds":["i1","i1"]}]},
+  {"name":"content mutation", "valid":false, "decisions":[{"kind":"component_variant","nodeId":"p","componentId":"body-other","content":[{"text":"forged"}]}]},
+  {"name":"forged human", "valid":false, "decisions":[{"kind":"component_variant","nodeId":"p","componentId":"body-other","origin":"human","locked":true}]},
+  {"name":"forged review", "valid":false, "decisions":[], "extra":{"approved":true,"reviews":[]}},
+  {"name":"unknown requirement", "valid":false, "decisions":[{"kind":"image_group","nodeIds":["i1","i2"],"requirementIds":["missing"]}]},
+  {"name":"duplicate decision", "valid":false, "decisions":[{"kind":"component_variant","nodeId":"p","componentId":"body-other"},{"kind":"component_variant","nodeId":"p","componentId":"body"}]}
+]
