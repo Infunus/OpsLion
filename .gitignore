@@ -18,6 +18,7 @@ playwright-report/
 .env.*
 !.env.example
 config/local.paths*.json
+!config/local.paths.example.json
 **/agent-config.json
 **/credentials*.json
 **/cookies*.json
@@ -41,6 +42,15 @@ exports/
 outputs/
 work/
 templates/
+we-mp-rss/
+!/integrations/we-mp-rss/
+/integrations/we-mp-rss/*
+!/integrations/we-mp-rss/*.patch
+!/integrations/we-mp-rss/LICENSE
+!/integrations/we-mp-rss/UPSTREAM.json
+/weread-mp-fetcher/
+private-rss/
+hello_week_portal/
 *.opslion-template.json
 *.opslion-layout-template.json
 *.xiumi.json
@@ -49,11 +59,31 @@ __pycache__/
 *.py[cod]
 .venv/
 
+# Private collector sessions and fetched content
+**/browser-profiles/
+**/chrome-profile/
+**/body-cache/
+**/body-diagnostics/
+**/login-qr*.png
+**/login.json
+**/verification.json
+**/session.json
+**/browser.json
+**/quota.json
+**/collector.lock
+**/last-collection.json
+
 # Local development notes and editor state
 AGENTS.md
-docs/
+docs/*
+!docs/rss-integration.md
+!docs/weread-fetcher.md
 .codex/
 .idea/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Weekly contact settings belong in the machine data directory.
+weekly-template.json
+weekly-template.json.tmp

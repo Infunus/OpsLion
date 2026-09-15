@@ -21,10 +21,11 @@ test("a fresh library is empty, imports a user template, and returns to empty af
 
 test("weekly copy import is independent of collection services and rejected files preserve the saved copy", async ({ page }) => {
   const requests: string[] = [];
-  page.on("request", (request) => { if (/local-api\/(?:status|articles|refresh|legacy|rss|agent\/plan)/.test(request.url())) requests.push(request.url()); });
+  page.on("request", (request) => { if (/local-api\/(?:articles|refresh|legacy|rss|agent\/plan)/.test(request.url())) requests.push(request.url()); });
   await mockBridge(page); await ready(page);
   await page.getByRole("button", { name: "周报", exact: true }).click();
-  await expect(page.getByRole("button", { name: /采集|公众号管理|导出全部推文/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "采集正文并打包", exact: true })).toBeDisabled();
+  await expect(page.getByRole("button", { name: /公众号与登录/ })).toBeEnabled();
   const copy = await page.evaluate(() => window.opTest.weeklyTemplate.helloWeekStarter);
   const input = page.getByLabel("导入周报文案文件");
   await input.setInputFiles({ name: "weekly.md", mimeType: "text/markdown", buffer: Buffer.from(copy) });

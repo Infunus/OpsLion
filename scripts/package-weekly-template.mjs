@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -41,6 +42,17 @@ try {
   await writeFile(path.join(output, "hello-week.template.json"), definition);
   await writeFile(path.join(output, "starter.md"), templates.starter);
   await writeFile(path.join(output, "hello-week-template-v1.zip"), await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE", compressionOptions: { level: 6 } }));
+  const skillPath = path.join(root, "skills", "Hello_Week_Skill.zip");
+  const skillData = await readFile(skillPath).catch((error) => { if (error.code === "ENOENT") return null; throw error; });
+  if (skillData) {
+    const skill = await JSZip.loadAsync(skillData);
+    const prefix = "hello-week-copy/references/template/";
+    for (const name of Object.keys(zip.files).filter((name) => ["hello-week.template.json", "starter.md", "all-modules.md"].includes(name) || name.startsWith("examples/") && name.endsWith(".md"))) skill.file(prefix + name, await zip.file(name).async("uint8array"));
+    const files = {};
+    for (const name of Object.keys(skill.files).filter((name) => name.startsWith(prefix) && !skill.files[name].dir)) files[name.slice(prefix.length)] = createHash("sha256").update(await skill.file(name).async("uint8array")).digest("hex");
+    skill.file("hello-week-copy/references/template-lock.json", JSON.stringify({ version: templates.definition.version, files }, null, 2) + "\n");
+    await writeFile(skillPath, await skill.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
+  }
   console.log(`Hello Week v${templates.definition.version}: ${templates.examples.length} previews, ${Object.keys(templates.definition.modules).length} modules, ${Object.keys(templates.definition.assets).length} assets → ${output}`);
 } finally {
   await browser?.close();

@@ -1,5 +1,8 @@
 import vinext from "vinext";
 import { defineConfig } from "vite";
+import { fileURLToPath } from "node:url";
+
+const projectDirectory = fileURLToPath(new URL(".", import.meta.url)).replaceAll("\\", "/");
 
 export default defineConfig({
   // JSZip has circular CommonJS imports. Bundle it before Vinext's development
@@ -9,7 +12,7 @@ export default defineConfig({
     host: "127.0.0.1",
     port: 3000,
     strictPort: true,
-    watch: { ignored: ["**/work/**", "**/outputs/**", "**/test-results/**", "**/playwright-report/**", "**/.local-*"] },
+    watch: { ignored: ["work/**", "outputs/**", "test-results/**", "playwright-report/**", ".local-*"].map((entry) => projectDirectory + entry) },
     proxy: {
       "/local-api": {
         target: "http://127.0.0.1:4319",

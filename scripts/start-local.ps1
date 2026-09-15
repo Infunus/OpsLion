@@ -1,4 +1,4 @@
-param([switch]$NoBrowser)
+﻿param([switch]$NoBrowser, [switch]$ForceRestart, [switch]$OpenWeekly)
 
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
@@ -12,6 +12,7 @@ $BridgeErrorLogFile = Join-Path $ProjectRoot ".local-bridge-error.log"
 $LocalPort = 3000
 $BridgePort = 4319
 $LocalUrl = "http://127.0.0.1:$LocalPort"
+$OpenUrl = if ($OpenWeekly) { $LocalUrl + '/?workspace=weekly' } else { $LocalUrl }
 $BridgeUrl = "http://127.0.0.1:$BridgePort/health"
 
 function Get-HttpStatus([string]$Url) {
@@ -40,7 +41,7 @@ function Test-BridgeReady {
     if ([int]$response.StatusCode -ne 200) { return $false }
     try {
       $payload = $response.Content | ConvertFrom-Json
-      if ($null -ne $payload.ok) { return $payload.ok -eq $true }
+      if ($null -ne $payload.ok) { return $payload.ok -eq $true -and $payload.collector_version -eq 3 }
     } catch {
     }
     return $true
@@ -139,8 +140,12 @@ function Clear-StudioCaches {
         if (-not $cacheTarget.StartsWith($cacheRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
           throw "Cache path is outside the project: $cacheTarget"
         }
-        if ((Get-Item -LiteralPath $cacheTarget).Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
-          throw "Cache path is a link and will not be removed: $cacheTarget"
+        $cacheCursor = $cacheTarget
+        while ($cacheCursor.StartsWith($cacheRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+          if ((Get-Item -LiteralPath $cacheCursor).Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+            throw "Cache path contains a link and will not be removed: $cacheCursor"
+          }
+          $cacheCursor = [System.IO.Path]::GetDirectoryName($cacheCursor)
         }
         Remove-Item -LiteralPath $cacheTarget -Recurse -Force -ErrorAction Stop
       } catch {
@@ -184,7 +189,7 @@ function Stop-ListenerIfAllowed([int]$Port, [string[]]$AllowedProcessNames, [str
 
   $name = (Get-ProcessNameSafe $owner).ToLowerInvariant()
   $role = if ($Port -eq $LocalPort) { "studio" } else { "bridge" }
-  if ($AllowedProcessNames -notcontains $name -or -not (Test-LocalProcessOwner $owner $role)) {
+  if ($AllowedProcessNames -notcontains $name -or -not (Test-LocalProcessOwner $owner $role -AllowOtherProjects:$ForceRestart)) {
     throw "$Label port $Port is occupied by another program.`nPID: $owner`nProcess: $name"
   }
 
@@ -260,12 +265,12 @@ function Wait-StudioStart($LauncherProcess, [int]$MaxAttempts = 100) {
   return [PSCustomObject]@{ State = "NoResponse"; Status = 0 }
 }
 
-function Start-StudioAttempt($NpmCommand) {
+function Start-StudioAttempt($NodeCommand) {
   Remove-Item -LiteralPath $LogFile -Force -ErrorAction SilentlyContinue
   Remove-Item -LiteralPath $ErrorLogFile -Force -ErrorAction SilentlyContinue
 
-  $server = Start-Process -FilePath $NpmCommand.Source `
-    -ArgumentList @("run", "dev") `
+  $server = Start-Process -FilePath $NodeCommand.Source `
+    -ArgumentList @(('"' + $VinextCli + '"'), "dev") `
     -WorkingDirectory $ProjectRoot `
     -WindowStyle Hidden `
     -PassThru `
@@ -281,7 +286,56 @@ function Start-StudioAttempt($NpmCommand) {
   }
 }
 
+$StartupMutex = New-Object System.Threading.Mutex($false, "Local\OpsLion-Startup-3000-4319")
+$MutexHeld = $false
+try {
+try {
+  $MutexHeld = $StartupMutex.WaitOne(0)
+  if (-not $MutexHeld) {
+    Write-Host "Another OpsLion startup is in progress. Waiting..." -ForegroundColor Yellow
+    $MutexHeld = $StartupMutex.WaitOne(50000)
+  }
+} catch [System.Threading.AbandonedMutexException] { $MutexHeld = $true }
+if (-not $MutexHeld) { throw "Another startup is still running. Please wait for its startup window to finish." }
+
+$Node = Get-Command node.exe -ErrorAction SilentlyContinue
+$Npm = Get-Command npm.cmd -ErrorAction SilentlyContinue
+if (-not $Node -or -not $Npm) { throw "Node.js/npm was not found. Install Node.js 22.13 or later first." }
+$nodeVersion = (& $Node.Source --version).Trim().TrimStart('v')
+if ($LASTEXITCODE -ne 0 -or [version]$nodeVersion -lt [version]"22.13.0") { throw "Node.js 22.13 or later is required." }
+$Python = Get-Command python.exe -ErrorAction SilentlyContinue
+if (-not $Python) { $Python = Get-Command python -ErrorAction SilentlyContinue }
+if (-not $Python) { throw "Python was not found. Install Python 3.10 or later first." }
+& $Python.Source -c "import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)"
+if ($LASTEXITCODE -ne 0) { throw "Python 3.10 or later is required." }
+
+$VinextCli = Join-Path $ProjectRoot "node_modules\vinext\dist\cli.js"
+if (-not (Test-Path -LiteralPath $VinextCli) -or -not (Test-Path -LiteralPath (Join-Path $ProjectRoot "node_modules\react\package.json"))) {
+  Write-Host "Installing local dependencies..." -ForegroundColor Yellow
+  Push-Location -LiteralPath $ProjectRoot
+  try {
+    & $Npm.Source ci --include=dev
+    if ($LASTEXITCODE -ne 0) { throw "Dependency installation failed." }
+  } finally { Pop-Location }
+}
+
 Write-Host "[1/4] Checking local ports..." -ForegroundColor Cyan
+if ($ForceRestart) {
+  # Check both owners before stopping either service.
+  foreach ($port in @($LocalPort, $BridgePort)) {
+    $owner = Get-PortOwner $port
+    $role = if ($port -eq $LocalPort) { "studio" } else { "bridge" }
+    if ($owner -gt 0 -and -not (Test-LocalProcessOwner $owner $role -AllowOtherProjects)) {
+      throw "Port $port is occupied by an unrelated program (PID $owner). Close that program before starting OpsLion."
+    }
+  }
+  Write-Host "Force restart: replacing previous OpsLion instances..." -ForegroundColor Yellow
+  Stop-ListenerIfAllowed $LocalPort @("node") "layout studio"
+  Stop-ListenerIfAllowed $BridgePort @("python", "pythonw", "python3", "python3.12") "data bridge"
+  Remove-PidFile $PidFile
+  Remove-PidFile $BridgePidFile
+  Clear-StudioCaches
+}
 
 $StudioAlreadyRunning = $false
 $existingStatus = Get-HttpStatus $LocalUrl
@@ -307,23 +361,6 @@ if ($existingStatus -eq 200) {
     Clear-StudioCaches
   }
   Remove-PidFile $PidFile
-}
-
-$Npm = Get-Command npm.cmd -ErrorAction SilentlyContinue
-if (-not $Npm) {
-  throw "Node.js/npm was not found. Install Node.js 22 or later first."
-}
-
-$Python = Get-Command python.exe -ErrorAction SilentlyContinue
-if (-not $Python) { $Python = Get-Command python -ErrorAction SilentlyContinue }
-if (-not $Python) {
-  throw "Python was not found. Install Python 3.10 or later first."
-}
-
-if (-not (Test-Path -LiteralPath (Join-Path $ProjectRoot "node_modules"))) {
-  Write-Host "First run: installing local dependencies..." -ForegroundColor Yellow
-  & $Npm.Source install --prefix $ProjectRoot
-  if ($LASTEXITCODE -ne 0) { throw "Dependency installation failed." }
 }
 
 Write-Host "[2/4] Checking the local data bridge..." -ForegroundColor Cyan
@@ -377,14 +414,14 @@ if (Test-BridgeReady) {
 
 if ($StudioAlreadyRunning) {
   Write-Host "[3/4] Layout studio is already ready." -ForegroundColor Cyan
-  if (-not $NoBrowser) { Start-Process -FilePath $LocalUrl -ErrorAction Stop }
+  if (-not $NoBrowser) { Start-Process -FilePath $OpenUrl -ErrorAction Stop }
   Write-Host "[4/4] Layout studio ready: $LocalUrl" -ForegroundColor Green
   exit 0
 }
 
 Write-Host "[3/4] Starting the layout studio..." -ForegroundColor Cyan
 
-$attempt = Start-StudioAttempt $Npm
+$attempt = Start-StudioAttempt $Node
 $result = $attempt.Result
 $server = $attempt.Process
 
@@ -394,14 +431,14 @@ if ($result.State -eq "HttpError") {
   Clear-StudioCaches
   Start-Sleep -Milliseconds 500
 
-  $attempt = Start-StudioAttempt $Npm
+  $attempt = Start-StudioAttempt $Node
   $result = $attempt.Result
   $server = $attempt.Process
 }
 
 if ($result.State -eq "Ready") {
   Save-ListenerPid $LocalPort $PidFile
-  if (-not $NoBrowser) { Start-Process -FilePath $LocalUrl -ErrorAction Stop }
+  if (-not $NoBrowser) { Start-Process -FilePath $OpenUrl -ErrorAction Stop }
   Write-Host "[4/4] Layout studio ready: $LocalUrl" -ForegroundColor Green
   exit 0
 }
@@ -420,3 +457,7 @@ if ($result.State -eq "HttpError") {
 }
 
 throw "The local service did not start.`n$($details -join [Environment]::NewLine)"
+} finally {
+  if ($MutexHeld) { $StartupMutex.ReleaseMutex() }
+  $StartupMutex.Dispose()
+}

@@ -4,7 +4,7 @@ import type { WeeklyDraft } from "./project-schema";
 import { loadWeeklyDraft, saveWeeklyDraft } from "./storage";
 import { useAutosave } from "./useAutosave";
 
-export const emptyWeeklyDraft = (): WeeklyDraft => ({ preparedCopy: null });
+export const emptyWeeklyDraft = (): WeeklyDraft => ({ preparedCopy: null, startDate: "", endDate: "", pendingExport: null });
 export function useWeeklyPersistence() {
   const [weekly, setWeekly] = useState<WeeklyDraft>(emptyWeeklyDraft);
   const [ready, setReady] = useState(false);

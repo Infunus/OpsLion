@@ -6,6 +6,10 @@ export const config = { base_url: "http://model.invalid/v1", model: "test-model"
 export async function mockBridge(page: Page) {
   await page.route("**/local-api/**", async (route) => {
     const path = new URL(route.request().url()).pathname;
+    if (path.endsWith("/weekly/template-settings")) return route.fulfill({ json: { settings: { email: "weekly@example.com", contactPerson: "示例联系人", organization: "示例组织" } } });
+    if (path.endsWith("/collector/status")) return route.fulfill({ json: { protocol: "opslion-collector/v1", prepared: true, module_available: true, node_available: true, browser_available: true, session: { state: "unknown", message: "等待登录" }, accounts: [], has_index: false, job: null, exports: [], quota: { used: 0, max: 40, runs: 0, max_runs: 2 } } });
+    if (path.endsWith("/status") && !path.endsWith("/refresh/status")) return route.fulfill({ json: { protocol: "opslion-rss/v1", available: false, feeds: [], totals: {} } });
+    if (path.endsWith("/refresh/status")) return route.fulfill({ json: { running: false, return_code: null } });
     const json = path.endsWith("/agent/config") ? { config } : path.endsWith("/agent/policy") ? { config: { ...config, layout_ai_enabled: route.request().postDataJSON().enabled, policy_generation: 2 } } : {};
     await route.fulfill({ json });
   });

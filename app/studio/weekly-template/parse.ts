@@ -45,7 +45,7 @@ export function parseHelloWeek(text: string): HelloWeekDocument {
     const leadingEmpty = body.findIndex((line) => line !== "");
     const content = body.join("\n").replace(/^\n+|\n+$/g, "");
     if (spec.body === "empty" && content.trim()) throw new WeeklyFormatError(`${spec.name}是固定模块，不能放额外正文`, start + 2);
-    if (spec.body !== "empty" && !content.trim()) throw new WeeklyFormatError(`${spec.name}正文为空`, start + 2);
+    if (spec.body !== "empty" && spec.body !== "template" && !content.trim()) throw new WeeklyFormatError(`${spec.name}正文为空`, start + 2);
     if (kind === "section") { section = true; category = false; }
     if (kind === "category") { if (!section) throw new WeeklyFormatError("资讯类别前需要 section 分区", start + 1); category = true; }
     if (kind === "news" && !category) throw new WeeklyFormatError("资讯条目前需要 section 分区和 category 类别", start + 1);

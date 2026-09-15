@@ -1,0 +1,605 @@
+diff --git a/driver/playwright_driver.py b/driver/playwright_driver.py
+index 1d0bc1d..0f1604d 100644
+--- a/driver/playwright_driver.py
++++ b/driver/playwright_driver.py
+@@ -88,8 +88,10 @@ class PlaywrightController:
+         # - 否则从AntiCrawlerConfig获取
+         if user_agent:
+             self.user_agent = user_agent
+-        else:
++        elif apply_anti_crawler:
+             self.user_agent = self.anti_crawler_config._ua_generator.get_realistic_user_agent(mobile_mode)
++        else:
++            self.user_agent = None  # 登录使用当前浏览器自己的 User-Agent。
+ 
+         # Playwright 对象
+         self._playwright = None
+@@ -134,8 +136,9 @@ class PlaywrightController:
+             # 微信公众平台在 Windows 本地 Chrome 下经常触发反爬（QR 加载超时），
+             # 此时设置 BROWSER_TYPE=webkit 可绕过。
+             _forced_browser = os.environ.get("BROWSER_TYPE", "").strip().lower()
++            CHROME_PATH = None
+             if _forced_browser in ("webkit", "chromium", "firefox", "msedge"):
+-                self.browser_type = _forced_browser
++                self.browser_type = "chromium" if _forced_browser == "msedge" else _forced_browser
+                 print_info(f"通过 BROWSER_TYPE 强制使用浏览器: {self.browser_type}")
+             else:
+                 CHROME_PATH = get_chrome_executable_path()
+@@ -158,10 +161,13 @@ class PlaywrightController:
+             # 只为 Chromium 添加特定参数
+             if self.browser_type == "chromium":
+                 launch_options["args"] = [
+-                    "--disable-blink-features=AutomationControlled",
+                     "--disable-dev-shm-usage",
+                     "--no-sandbox",
+                 ]
++                if self.apply_anti_crawler:
++                    launch_options["args"].append("--disable-blink-features=AutomationControlled")
++                if _forced_browser == "msedge":
++                    launch_options["channel"] = "msedge"
+                 # 使用本地 Chrome 可执行文件，避免下载 Playwright 浏览器
+                 if CHROME_PATH:
+                     launch_options["executable_path"] = CHROME_PATH
+@@ -178,11 +184,12 @@ class PlaywrightController:
+ 
+             # 构建上下文配置
+             context_options = {
+-                "user_agent": self.user_agent,  # 使用初始化时确定的UA
+                 "viewport": anti_config.get("viewport", {"width": 1920, "height": 1080}),
+                 "locale": "zh-CN",
+                 "timezone_id": "Asia/Shanghai",
+             }
++            if self.user_agent:
++                context_options["user_agent"] = self.user_agent
+ 
+             # 应用额外的HTTP头（反爬注入可能破坏跨域资源加载，关闭时跳过）
+             if self.apply_anti_crawler and "extra_http_headers" in anti_config:
+@@ -190,7 +197,7 @@ class PlaywrightController:
+ 
+             # 应用其他可选配置
+             for key in ["java_script_enabled", "ignore_https_errors", "bypass_csp"]:
+-                if key in anti_config:
++                if self.apply_anti_crawler and key in anti_config:
+                     context_options[key] = anti_config[key]
+ 
+             self._context = await self._browser.new_context(**context_options)
+diff --git a/driver/wx.py b/driver/wx.py
+index 8bb0e22..8704f36 100644
+--- a/driver/wx.py
++++ b/driver/wx.py
+@@ -32,8 +32,11 @@ class Wx:
+     ext_data = None
+     # 添加线程锁保护共享变量
+     _login_lock = Lock()
+-    def __init__(self):
+-        self.lock_path=os.path.dirname(self.lock_file_path)
++    def __init__(self):
++        self._qr_start_lock = Lock()
++        self._qr_state = "idle"
++        self._qr_error = ""
++        self.lock_path=os.path.dirname(self.lock_file_path)
+         self.refresh_interval=3660*24
+         self.controller=PlaywrightController()
+         if not os.path.exists(self.lock_path):
+@@ -305,38 +308,44 @@ class Wx:
+                     print_success("内容任务队列已恢复")
+             except Exception as e:
+                 print_error(f"恢复队列失败: {e}")
+-    def GetCode(self,CallBack=None,Notice=None):
+-        self.Notice=Notice
+-        if  self.check_lock():
+-            print_warning("微信公众平台登录脚本正在运行，请勿重复运行")
+-            return {
+-                "code":f"{self.wx_login_url}?t={(time.time())}",
+-                "msg":"微信公众平台登录脚本正在运行，请勿重复运行！"}
+-
+-        self.Clean()
+-        print("子线程执行中")
+-
+-        def run_wxLogin():
++    def GetCode(self,CallBack=None,Notice=None):
++        def run_wxLogin():
+             import asyncio
+             loop = asyncio.new_event_loop()
+             asyncio.set_event_loop(loop)
+             try:
+-                loop.run_until_complete(self.wxLogin(CallBack, True))
++                loop.run_until_complete(self.wxLogin(CallBack, True, _reserved=True))
+             finally:
+                 loop.close()
+ 
+         from core.thread import ThreadManager
+-        self.thread = ThreadManager(target=run_wxLogin)
+-        self.thread.start()  # 启动线程
+-        from core.ver import VERSION
+-        print(f"微信公众平台登录 v{VERSION}")
+-        return WX_API.QRcode()
++        # 在启动线程之前占用登录任务；图片生成前的重复点击也复用同一任务。
++        with self._qr_start_lock:
++            thread = getattr(self, "thread", None)
++            if (thread is not None and thread.is_alive()) or self.check_lock():
++                return self.QRcode()
++            self.Notice = Notice
++            self.Clean()
++            self._qr_state, self._qr_error = "loading", ""
++            with self._login_lock:
++                self._haslogin = False
++            self.set_lock()
++            self.thread = ThreadManager(target=run_wxLogin)
++            try:
++                self.thread.start()
++            except Exception:
++                self._qr_state = "failed"
++                self._qr_error = "授权任务启动失败，请重试"
++                self.release_lock()
++            return self.QRcode()
+     
+     wait_time=1
+     def QRcode(self):
+         return {
+             "code":f"/{self.wx_login_url}?t={(time.time())}",
+-            "is_exists":self.GetHasCode(),
++            "is_exists":self.GetHasCode(),
++            "state": self._qr_state,
++            "error": self._qr_error,
+         }
+     async def refresh_task(self):
+         try:
+@@ -348,8 +357,13 @@ class Wx:
+                 raise Exception(f"登录已经失效，请重新登录")
+         except Exception as e:
+             raise Exception(f"浏览器关闭")  # 重新抛出异常以便外部捕获处理
+-    def QrStatus(self):
+-        return {"login_status":self.HasLogin(),"qr_code":self.GetHasCode()}
++    def QrStatus(self):
++        return {
++            "login_status": self.HasLogin() and self._qr_state not in ("loading", "waiting", "failed"),
++            "qr_code": self.GetHasCode(),
++            "state": self._qr_state,
++            "error": self._qr_error,
++        }
+ 
+     def HasLogin(self):
+         with self._login_lock:
+@@ -505,7 +519,7 @@ class Wx:
+             await asyncio.sleep(0.5)
+         return False
+ 
+-    async def wxLogin(self, CallBack=None, NeedExit=True):
++    async def wxLogin(self, CallBack=None, NeedExit=True, *, _reserved=False):
+         """
+         微信公众平台登录流程（异步）：
+         1. 检查依赖和环境
+@@ -517,13 +531,15 @@ class Wx:
+         """
+         import asyncio
+ 
+-        # 使用上下文管理器确保资源清理
+-        try:
+-            if self.check_lock():
+-                print_warning("微信公众平台登录脚本正在运行，请勿重复运行")
+-                return None
+-
+-            self.set_lock()
++        # 重复调用不得进入 finally，避免关闭正在扫码的浏览器。
++        if not _reserved:
++            if self.check_lock():
++                return None
++            self.set_lock()
++        driver = None
++        failure_message = "授权浏览器启动失败，请检查本机浏览器及 RSS 依赖后重试"
++        try:
++            self._qr_state, self._qr_error = "loading", ""
+ 
+             # 使用更短的锁持有时间，只保护变量修改
+             self._login_lock.acquire()
+@@ -533,43 +549,42 @@ class Wx:
+             # 清理现有资源
+             self.cleanup_resources()
+ 
+-            self.controller = PlaywrightController()
++            from core.config import cfg
++            self.controller = PlaywrightController(
++                mobile_mode=False, apply_anti_crawler=False,
++                proxy_url=cfg.get("proxy.http_url", "") if cfg.get("proxy.enabled", False) else "",
++            )
+             # 初始化浏览器控制器
+             driver = self.controller
+             # 启动浏览器并打开微信公众平台
+-            print_info("正在启动浏览器...")
+-            await driver.start_browser()
+-            await driver.open_url(self.WX_LOGIN)
+-            page = driver.page
+-
+-            # 等待页面完全加载
+-            # 新版登录页存在持续的轮询请求，networkidle可能永远不触发，
+-            # 超时不视为错误，由后续二维码加载检测兜底
+-            print_info("正在加载登录页面...")
+-            try:
+-                await page.wait_for_load_state("networkidle", timeout=10000)
+-            except Exception:
+-                pass
++            print_info("正在启动浏览器...")
++            await driver.start_browser()
++            failure_message = "微信登录页打开失败，请检查网络或 RSS 代理配置后重试"
++            if not await driver.open_url(self.WX_LOGIN):
++                raise RuntimeError(failure_message)
++            page = driver.page
++            print_info("正在加载登录页面...")
+ 
+             # 定位二维码区域
+-            qr_tag = ".login__type__container__scan__qrcode"
++            qr_tag = ".login__type__container__scan__qrcode"
++            failure_message = "二维码加载超时，请重试；若持续失败，请检查 RSS 代理能否访问微信公众平台"
+             # 新版登录页可能默认展示"微信快捷登录"，二维码被隐藏或src为空，
+             # 需要先切换回扫码登录并等待二维码图片真正加载完成
+             if not await self._wait_qrcode_ready(page, qr_tag):
+                 raise Exception("二维码加载超时，请重试")
+             # 获取二维码图片URL
+             qrcode = await page.query_selector(qr_tag)
+-            code_src = await qrcode.get_attribute("src")
+-            print("正在生成二维码图片...")
+-            print(f"code_src:{code_src}")
++            print("正在生成二维码图片...")
+ 
+             # 使用Playwright截图功能（添加异常处理）
+             await qrcode.screenshot(path=self.wx_login_url)
+ 
+             print("二维码已保存为 wx_qrcode.png，请扫码登录...")
+-            self.HasCode = True
+-            if os.path.getsize(self.wx_login_url) <= 364:
+-                raise Exception("二维码图片获取失败，请重新扫码")
++            if os.path.getsize(self.wx_login_url) <= 364:
++                raise Exception("二维码图片获取失败，请重新扫码")
++            self.HasCode = True
++            self._qr_state = "waiting"
++            failure_message = "二维码已过期，请重新获取并扫码"
+             # 等待登录成功（检测二维码图片加载完成）
+             print("等待扫码登录...")
+             if self.Notice is not None:
+@@ -586,25 +601,26 @@ class Wx:
+             # 加载时也会触发该事件，导致未扫码就误判为登录成功
+             await page.wait_for_url(lambda url: "cgi-bin/home" in url, timeout=5*60 * 1000)
+ 
+-            from .success import setStatus
+-            with self._login_lock:
+-                self._haslogin = True
+-            setStatus(True)
+-            self.CallBack = CallBack
+-            await self.Call_Success()
+-        except Exception as e:
+-            if "Timeout" in str(e):
+-                print_warning("\n扫码登录超时，请重新运行程序进行扫码登录")
+-
+-            else:
+-                print_error(f"\n错误发生: {str(e)}")
+-            self.SESSION = None
+-            return self.SESSION
+-        finally:
+-            self.release_lock()
+-            if NeedExit:
+-                self.Clean()
+-            await self.Close()
++            failure_message = "扫码后未取得有效授权，请重新扫码并在手机上确认"
++            self.CallBack = CallBack
++            await self.Call_Success()
++            if not self.HasLogin() or not self.SESSION or not self.SESSION.get("token"):
++                raise RuntimeError(failure_message)
++            self._qr_state = "success"
++        except Exception as e:
++            self._qr_state, self._qr_error = "failed", failure_message
++            with self._login_lock:
++                self._haslogin = False
++            print_error(f"微信扫码授权失败 ({type(e).__name__}): {failure_message}")
++            self.SESSION = None
++            return self.SESSION
++        finally:
++            if NeedExit:
++                self.Clean()
++            # 只关闭本次任务创建的浏览器，清理完成后才允许下一次授权。
++            if driver is not None:
++                await driver.Close()
++            self.release_lock()
+         return self.SESSION
+     def format_token(self, cookies: list, token: str = ""):
+         cookies_str=""
+@@ -774,10 +790,13 @@ class Wx:
+             print(f"设置cookie过期时出错: {str(e)}")
+             return False
+             
+-    def check_lock(self, timeout: int = 300) -> bool:
+-        if not os.path.exists(self.wx_login_url):
+-            return False
+-        return True
++    def check_lock(self, timeout: int = 300) -> bool:
++        try:
++            with open(self.lock_file_path, "r") as handle:
++                pid, started_at = handle.read().strip().split("|")
++            return psutil.pid_exists(int(pid)) and time.time() - float(started_at) < timeout + 120
++        except (OSError, ValueError):
++            return False
+     def set_lock(self):
+         """创建锁定文件，写入当前进程PID和时间戳"""
+         os.makedirs(os.path.dirname(self.lock_file_path), exist_ok=True)
+@@ -812,4 +831,4 @@ class Wx:
+ 
+ WX_API = Wx()
+ def GetCode(CallBack:any=None,NeedExit=True):
+-    WX_API.GetCode(CallBack,NeedExit=NeedExit)
+\ No newline at end of file
++    WX_API.GetCode(CallBack,NeedExit=NeedExit)
+diff --git a/web_ui/src/api/auth.ts b/web_ui/src/api/auth.ts
+index 2e13705..db2640a 100644
+--- a/web_ui/src/api/auth.ts
++++ b/web_ui/src/api/auth.ts
+@@ -1,6 +1,4 @@
+ import http from './http'
+-import axios from 'axios'
+-import { Message } from '@arco-design/web-vue'
+ export interface LoginParams {
+   username: string
+   password: string
+@@ -31,68 +29,59 @@ export interface VerifyResult {
+ export const verifyToken = () => {
+   return http.get<VerifyResult>('/wx/auth/verify')
+ }
+-let qrCodeIntervalId:number = 0;
+-let qrCodeCounter = 0;
+-
+-export const QRCode = () => {
+-  return new Promise((resolve, reject) => {
+-    if (qrCodeIntervalId) {
+-      clearInterval(qrCodeIntervalId);
+-      qrCodeIntervalId = 0;
+-    }
+-    qrCodeCounter = 0;
+-    
+-    http.get('/wx/auth/qr/code').then(res => {
+-      const maxAttempts = 500;
+-      qrCodeIntervalId = setInterval(() => {
+-        qrCodeCounter++;
+-        if(qrCodeCounter > maxAttempts) {
+-          clearInterval(qrCodeIntervalId);
+-          qrCodeIntervalId = 0;
+-          reject(new Error('获取二维码超时'));
+-          return;
+-        }
+-        axios.head(res?.code).then(response => {
+-          if(response.status==200){
+-            console.log(response)
+-            clearInterval(qrCodeIntervalId);
+-            resolve(res)
+-          }
+-        }).catch(err => {
+-          if(qrCodeCounter >= maxAttempts) {
+-            clearInterval(qrCodeIntervalId);
+-            reject(err);
+-          }
+-        })
+-      }, 1000)
+-    }).catch(reject)
+-  })
+-}
+-let interval_status_Id:number=0
+-export const checkQRCodeStatus = () => {
+-  return new Promise((resolve, reject) => {
+-     if (interval_status_Id) {
+-      clearInterval(interval_status_Id);
+-      qrCodeIntervalId = 0;
+-    }
+-      interval_status_Id = setInterval(() => {
+-        http.get("wx/auth/qr/status").then(response => {
+-          if(response?.login_status){
+-            Message.success("授权成功")
+-            clearInterval(interval_status_Id)
+-            resolve(response)
+-          } else if(response?.qr_code===false){
+-            Message.error("二维码已失效，请重新获取")
+-            clearInterval(interval_status_Id)
+-            reject(new Error('二维码已失效'))
+-          }
+-        }).catch(err => {
+-          // clearInterval(intervalId)
+-          // reject(err)
+-        })
+-      }, 3000)
+-  })
+-}
++interface QRStatus {
++  state?: 'idle' | 'loading' | 'waiting' | 'success' | 'failed'
++  error?: string
++  login_status?: boolean
++  qr_code?: boolean
++}
++
++interface QRResult extends QRStatus {
++  code: string
++  is_exists?: boolean
++}
++
++const pause = (signal?: AbortSignal) => new Promise<void>((resolve, reject) => {
++  const abort = () => {
++    clearTimeout(timer)
++    signal?.removeEventListener('abort', abort)
++    reject(new DOMException('授权窗口已关闭', 'AbortError'))
++  }
++  const timer = setTimeout(() => {
++    signal?.removeEventListener('abort', abort)
++    resolve()
++  }, 1000)
++  signal?.addEventListener('abort', abort, { once: true })
++  if (signal?.aborted) abort()
++})
++
++const pollQR = async (ready: (status: QRStatus) => boolean, timeout: number, signal?: AbortSignal) => {
++  const deadline = Date.now() + timeout
++  while (Date.now() < deadline) {
++    if (signal?.aborted) throw new DOMException('授权窗口已关闭', 'AbortError')
++    const status = await http.get<unknown, QRStatus>('/wx/auth/qr/status', { signal, timeout: 8000 })
++    if (status.state === 'failed') throw new Error(status.error || '授权失败，请重试')
++    if (ready(status)) return status
++    await pause(signal)
++  }
++  throw new Error('等待授权超时，请重新获取二维码')
++}
++
++export const QRCode = async (signal?: AbortSignal): Promise<QRResult> => {
++  const result = await http.get<unknown, QRResult>('/wx/auth/qr/code', { signal, timeout: 10000 })
++  if (result.state === 'failed') throw new Error(result.error || '授权任务启动失败，请重试')
++  if (!result.code) throw new Error('服务未返回二维码地址，请重试')
++  await pollQR(status => status.qr_code === true || status.login_status === true, 75000, signal)
++  return result
++}
++
++export const checkQRCodeStatus = (signal?: AbortSignal) => pollQR(status => {
++  if (status.login_status) return true
++  if (status.qr_code === false && status.state !== 'loading') {
++    throw new Error('二维码已失效，请重新获取')
++  }
++  return false
++}, 300000, signal)
+ export const refreshToken = () => {
+   return http.post<LoginResult>('/wx/auth/refresh')
+ }
+@@ -123,4 +112,4 @@ export const requestResetCode = (data: RequestResetCodeParams) => {
+ 
+ export const resetPassword = (data: ResetPasswordParams) => {
+   return http.post('/wx/auth/password/reset', data)
+-}
+\ No newline at end of file
++}
+diff --git a/web_ui/src/components/WechatAuthQrcode.vue b/web_ui/src/components/WechatAuthQrcode.vue
+index b5d695d..af95ad5 100644
+--- a/web_ui/src/components/WechatAuthQrcode.vue
++++ b/web_ui/src/components/WechatAuthQrcode.vue
+@@ -5,7 +5,7 @@
+     :footer="false"
+     :mask-closable="false"
+     width="400px"
+-    @cancel="clearTimer"
++    @cancel="cancelAuth"
+   >
+     <div class="qrcode-container">
+       <div v-if="loading" class="loading">
+@@ -13,7 +13,7 @@
+         <p>正在获取二维码...</p>
+       </div>
+       <div v-else-if="qrcodeUrl" class="qrcode" style="text-align:center;">
+-        <img :src="qrcodeUrl" alt="微信授权二维码" />
++        <img :src="qrcodeUrl" alt="微信授权二维码" @error="imageFailed" />
+         <a-tooltip content="扫码请选择公众号或者服务号，如果没有帐号，请点击下方注册" placement="top">
+         <p>请使用微信扫码授权</p>
+         </a-tooltip>
+@@ -24,7 +24,7 @@
+         </p>
+       </div>
+       <div v-else class="error">
+-        <a-alert type="error" :message="errorMessage" />
++        <a-alert type="error">{{ errorMessage }}</a-alert>
+         <a-button type="primary" @click="startAuth">重试</a-button>
+       </div>
+     </div>
+@@ -32,9 +32,8 @@
+ </template>
+ 
+ <script lang="ts" setup>
+-import { ref } from 'vue'
+-import { QRCode, checkQRCodeStatus } from '@/api/auth'
+-import { Message } from '@arco-design/web-vue'
++import { onBeforeUnmount, ref } from 'vue'
++import { QRCode, checkQRCodeStatus } from '@/api/auth'
+ 
+ const emit = defineEmits(['success', 'error'])
+ 
+@@ -43,46 +42,52 @@ const loading = ref(false)
+ const qrcodeUrl = ref('')
+ const errorMessage = ref('')
+ 
+-let checkStatusTimer: number | null = null
+-
+-const startAuth = async () => {
+-  try {
++let controller: AbortController | null = null
++
++const cancelAuth = () => {
++  controller?.abort()
++  controller = null
++}
++
++const imageFailed = () => {
++  cancelAuth()
++  qrcodeUrl.value = ''
++  errorMessage.value = '二维码图片加载失败，请重试'
++}
++
++const startAuth = async () => {
++  cancelAuth()
++  const attempt = new AbortController()
++  controller = attempt
++  try {
+     visible.value = true
+     loading.value = true
+-    errorMessage.value = ''
++    errorMessage.value = ''
++    qrcodeUrl.value = ''
+     
+     // 获取二维码
+-    const res = await QRCode()
++    const res = await QRCode(attempt.signal)
++    if (attempt.signal.aborted) return
+     qrcodeUrl.value = res?.code
+     loading.value = false
+ 
+     // 开始检查授权状态
+-        checkQRCodeStatus().then((statusRes) => {
+-          if (statusRes?.login_status) {
+-            clearTimer()
+-            // Message.success('授权成功')
+-            emit('success', statusRes)
+-            visible.value = false
+-          }
+-        }).catch((err) => {
+-          console.error('检查二维码状态失败:', err)
+-          errorMessage.value = '授权失败，请重试'
+-          visible.value = false
+-           emit('error', err)
+-        })
+-  } catch (err) {
+-    loading.value = false
+-    errorMessage.value = '获取二维码失败，请重试'
+-    emit('error', err)
+-  }
+-}
+-
+-const clearTimer = () => {
+-  if (checkStatusTimer) {
+-    clearInterval(checkStatusTimer)
+-    checkStatusTimer = null
+-  }
+-}
++    const statusRes = await checkQRCodeStatus(attempt.signal)
++    if (attempt.signal.aborted) return
++    emit('success', statusRes)
++    visible.value = false
++  } catch (err) {
++    if (attempt.signal.aborted) return
++    loading.value = false
++    qrcodeUrl.value = ''
++    errorMessage.value = err instanceof Error ? err.message : String(err || '获取二维码失败，请重试')
++    emit('error', err)
++  } finally {
++    if (controller === attempt) controller = null
++  }
++}
++
++onBeforeUnmount(cancelAuth)
+ 
+ defineExpose({
+   startAuth
+@@ -110,4 +115,4 @@ defineExpose({
+   width: 200px;
+   height: 200px;
+ }
+-</style>
+\ No newline at end of file
++</style>

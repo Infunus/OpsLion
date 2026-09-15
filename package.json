@@ -11,7 +11,8 @@
     "start": "vinext start",
     "test": "npm run test:browser && node --test tests/artifacts.test.mjs tests/startup.test.mjs && python -m unittest discover -s tests -p \"*_test.py\"",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "test:browser": "npm run build && playwright test"
+    "test:browser": "npm run build && playwright test",
+    "test:weread": "node --test tests/weread-fetcher.test.mjs tests/weread-content.test.mjs tests/collector-worker.test.mjs"
   },
   "dependencies": {
     "dompurify": "^3.4.15",

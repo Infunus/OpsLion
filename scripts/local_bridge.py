@@ -8,15 +8,31 @@ from collections import OrderedDict
 from datetime import datetime
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import parse_qs, urlparse
+from pathlib import Path
+from urllib.parse import parse_qs, quote, unquote, urlparse
 from urllib.request import Request, urlopen
 
 
 from agent_runtime import AgentRuntimeError, create_agent_plan, get_agent_config, save_agent_config, test_agent_connection, set_agent_policy, cancel_agent_run, delete_agent_profile
+from rss_connector import RssConnector
+from collector_service import CollectorService
+from weekly_settings import get_weekly_settings, save_weekly_settings
 
 
 HOST = "127.0.0.1"
 PORT = 4319
+rss = RssConnector(Path(__file__).resolve().parent.parent / "config" / "local.paths.json")
+
+_collector = None
+_collector_lock = threading.Lock()
+
+
+def collector():
+    global _collector
+    with _collector_lock:
+        if _collector is None:
+            _collector = CollectorService(Path(__file__).resolve().parent.parent / "config" / "local.paths.json")
+        return _collector
 
 _template_lock = threading.RLock()
 _pending_templates: OrderedDict[str, tuple[float, dict]] = OrderedDict()
@@ -143,6 +159,27 @@ class Handler(BaseHTTPRequestHandler):
             raise ValueError("请求体必须是 JSON 对象")
         return payload
 
+    def collector_allowed(self):
+        hostname = urlparse("http://" + self.headers.get("Host", "")).hostname
+        origin = self.headers.get("Origin", "")
+        return hostname in {"127.0.0.1", "localhost", "::1"} and origin in {"", "http://127.0.0.1:3000", "http://localhost:3000"} and self.headers.get("Sec-Fetch-Site") != "cross-site"
+
+    def send_collector_file(self, file, content_type, *, attachment=True):
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(file.stat().st_size))
+        if attachment:
+            self.send_header("Content-Disposition", "attachment; filename*=UTF-8''" + quote(file.name))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        try:
+            with file.open("rb") as stream:
+                while chunk := stream.read(256 * 1024):
+                    self.wfile.write(chunk)
+        except (ConnectionError, BrokenPipeError):
+            pass
+
     def send_json(self, payload: dict, status: int = HTTPStatus.OK) -> None:
         body = json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")
         self.send_response(status)
@@ -183,8 +220,36 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if not self.allowed_origin():
+                return self.send_json({"message": "Origin not allowed"}, HTTPStatus.FORBIDDEN)
+            if parsed.path.startswith("/collector/"):
+                if not self.collector_allowed():
+                    return self.send_json({"message": "Origin not allowed"}, HTTPStatus.FORBIDDEN)
+                if parsed.path == "/collector/status":
+                    return self.send_json(collector().status())
+                if parsed.path == "/collector/login-qr":
+                    query = parse_qs(parsed.query)
+                    return self.send_collector_file(collector().login_image(query.get("id", [""])[0]), "image/png", attachment=False)
+                if parsed.path == "/collector/download":
+                    query = parse_qs(parsed.query)
+                    file, content_type = collector().download(query.get("id", [""])[0], query.get("kind", [""])[0])
+                    return self.send_collector_file(file, content_type)
             if parsed.path == "/health":
-                return self.send_json({"ok": True})
+                return self.send_json({"ok": True, "collector_version": 3})
+            rss_reads = {"/status": "status", "/articles": "articles", "/refresh/status": "refresh_status", "/rss/management": "management", "/rss/auth/poll": "auth_poll"}
+            if parsed.path in rss_reads:
+                query = {key: values[0] for key, values in parse_qs(parsed.query).items()}
+                return self.send_json(rss.call(rss_reads[parsed.path], query))
+            if parsed.path.startswith("/articles/"):
+                payload = {"id": unquote(parsed.path.removeprefix("/articles/"))}
+                if parse_qs(parsed.query).get("ensure_content") == ["1"]:
+                    payload["ensure_content"] = True
+                item = rss.call("article", payload).get("article")
+                return self.send_json({"article": item, **({"message": "未找到这篇推文"} if item is None else {})}, HTTPStatus.OK if item else HTTPStatus.NOT_FOUND)
+            if parsed.path == "/weekly/template-settings":
+                if not self.collector_allowed():
+                    return self.send_json({"message": "Origin not allowed"}, HTTPStatus.FORBIDDEN)
+                return self.send_json({"settings": get_weekly_settings()})
             if parsed.path == "/agent/config":
                 return self.send_json({"config": get_agent_config()})
             if parsed.path == "/assets/proxy":
@@ -205,8 +270,30 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if parsed.path.startswith("/collector/"):
+                if not self.collector_allowed() or not self.headers.get("Content-Type", "").startswith("application/json"):
+                    return self.send_json({"message": "Origin not allowed"}, HTTPStatus.FORBIDDEN)
+                payload = self.read_json(8192)
+                if parsed.path == "/collector/actions":
+                    return self.send_json(collector().start(payload), HTTPStatus.ACCEPTED)
+                if parsed.path == "/collector/cancel":
+                    return self.send_json(collector().cancel(payload.get("job_id")))
             if not self.allowed_origin():
                 return self.send_json({"message": "Origin not allowed"}, HTTPStatus.FORBIDDEN)
+            rss_writes = {
+                "/rss/auth/start": "auth_start", "/rss/auth/check": "auth_check",
+                "/rss/auth/cancel": "auth_cancel", "/rss/auth/logout": "auth_logout",
+                "/rss/feeds/resolve": "feed_resolve", "/rss/feeds/add": "feed_add", "/rss/feeds/update": "feed_update",
+                "/refresh": "refresh", "/refresh/cancel": "cancel",
+            }
+            if parsed.path in rss_writes:
+                payload = self.read_json(8192)
+                status = HTTPStatus.ACCEPTED if parsed.path == "/refresh" else HTTPStatus.OK
+                return self.send_json(rss.call(rss_writes[parsed.path], payload), status)
+            if parsed.path == "/weekly/template-settings":
+                if not self.collector_allowed() or not self.headers.get("Content-Type", "").startswith("application/json"):
+                    return self.send_json({"message": "Origin not allowed"}, HTTPStatus.FORBIDDEN)
+                return self.send_json({"settings": save_weekly_settings(self.read_json(8192))})
             if parsed.path == "/agent/config":
                 return self.send_json({"ok": True, "config": save_agent_config(self.read_json(64 * 1024))})
             if parsed.path == "/agent/test":

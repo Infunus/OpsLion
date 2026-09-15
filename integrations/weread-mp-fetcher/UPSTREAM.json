@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/Pengyf04/weread-mp-fetcher",
+  "revision": "3944db5e6df3dfb7c12d1ac2fddb902361cbc781",
+  "version": "0.2.0",
+  "license": "MIT",
+  "files": "Unmodified upstream lib/, bin/, package.json, README.md and LICENSE. Runtime configuration and user data are excluded."
+}

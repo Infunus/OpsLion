@@ -74,9 +74,9 @@ test("invalid modules and unsupported content stop the whole render with useful 
     { copy: header + ":::spacer 999\n:::", message: "留白高度" },
     { copy: header + "模块之外的正文", message: "模块外不能" },
     { copy: header + ":::closing\n```cpp\n未结束代码\n:::", message: "代码块缺少" },
-    { copy: header + ":::contact\n\n![配图](file:///C:/hidden.png)\n:::", message: "第 7 行" },
-    { copy: header + ":::contact\n说明\n| 姓名 | 联系方式 |\n:::", message: "不支持表格" },
-    { copy: header + ":::contact\n- 场次一\n    四个空格\n:::", message: "恰好使用两个空格" },
+    { copy: header + ":::callout 标题\n\n![配图](file:///C:/hidden.png)\n:::", message: "第 7 行" },
+    { copy: header + ":::callout 标题\n说明\n| 姓名 | 联系方式 |\n:::", message: "不支持表格" },
+    { copy: header + ":::callout 标题\n- 场次一\n    四个空格\n:::", message: "恰好使用两个空格" },
   ];
   for (const item of failures) {
     const error = await page.evaluate((text) => { try { window.opTest.weeklyTemplate.renderHelloWeek(text); return ""; } catch (error) { return (error as Error).message; } }, item.copy);
@@ -164,7 +164,8 @@ test("standalone HTML embeds artwork and asset read failures cannot download a b
   expect(html).toContain("data:image/png;base64,");
   expect(html).not.toContain("/assets/hello-week/");
   let downloads = 0; page.on("download", () => downloads++);
-  await page.route("**/assets/hello-week/banner.png", (route) => route.fulfill({ status: 500, body: "unavailable" }));
+  const bannerPath = await page.evaluate(() => window.opTest.weeklyTemplate.definition.assets.banner.src);
+  await page.route(`**${bannerPath}`, (route) => route.fulfill({ status: 500, body: "unavailable" }));
   await page.getByRole("button", { name: "下载 Bridge 包", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("本地素材读取失败");
   expect(downloads).toBe(0);
@@ -178,8 +179,13 @@ test("standalone HTML embeds artwork and asset read failures cannot download a b
 test("shipped template archive matches the compiler, all examples render and all module types appear", async ({ page }) => {
   await ready(page, true);
   const zip = await JSZip.loadAsync(await readFile("public/weekly/hello-week-template-v1.zip"));
-  const definition = JSON.parse(await zip.file("hello-week.template.json")!.async("string"));
+  const definitionText = await zip.file("hello-week.template.json")!.async("string");
+  const definition = JSON.parse(definitionText);
   expect(definition).toEqual(await page.evaluate(() => window.opTest.weeklyTemplate.definition));
+  expect(await readFile("public/weekly/hello-week.template.json", "utf8")).toBe(definitionText);
+  const starter = await page.evaluate(() => window.opTest.weeklyTemplate.helloWeekStarter);
+  expect(await zip.file("starter.md")!.async("string")).toBe(starter);
+  expect(await readFile("public/weekly/starter.md", "utf8")).toBe(starter);
   expect(zip.file("README.md")).toBeNull();
   expect(zip.file("reference-analysis.md")).toBeNull();
   const catalog = await zip.file("all-modules.md")!.async("string");
@@ -192,13 +198,37 @@ test("shipped template archive matches the compiler, all examples render and all
   for (const item of await page.evaluate(() => window.opTest.weeklyTemplate.helloWeekExamples)) {
     expect(await zip.file(`examples/${item.filename}`)!.async("string")).toBe(item.text);
     const preview = await zip.file(`preview/${item.id}.html`)!.async("string");
-    expect(preview).toContain("../assets/banner.png");
+    expect(preview).toContain(definition.assets.banner.src.replace("/assets/hello-week/", "../assets/"));
     expect(preview).not.toContain("/assets/hello-week/");
   }
+  const expectedAssets: string[] = [];
+  const assetPaths: string[] = [];
   for (const asset of Object.values(definition.assets) as { src: string }[]) {
     const basename = asset.src.split("/").pop();
-    expect(await zip.file(`assets/${basename}`)!.async("nodebuffer")).toEqual(await readFile(`public${asset.src}`));
+    const original = await readFile(`public${asset.src}`);
+    expect(await zip.file(`assets/${basename}`)!.async("nodebuffer")).toEqual(original);
+    expectedAssets.push(original.toString("base64"));
+    assetPaths.push(`assets/${basename}`);
   }
+  expect(Object.keys(zip.files).filter((name) => name.startsWith("assets/") && !zip.files[name].dir).sort()).toEqual(assetPaths.sort());
   const packet = normalizePayload(JSON.parse(await zip.file("Hello-Week-example.xiumi.json")!.async("string")));
   expect(packet.assetSummary).toMatchObject({ embedded: 7, local: 0 });
+  expect(new Set(packet.assets.map((asset: { src: string }) => asset.src.split(",", 2)[1]))).toEqual(new Set(expectedAssets));
+});
+
+
+test("the published copy Skill uses the same template contract and omits template-owned blocks", async ({ page }) => {
+  await ready(page, true);
+  const zip = await JSZip.loadAsync(await readFile("skills/Hello_Week_Skill.zip"));
+  const prefix = "hello-week-copy/references/template/";
+  const definition = JSON.parse(await zip.file(prefix + "hello-week.template.json")!.async("string"));
+  expect(definition).toEqual(await page.evaluate(() => window.opTest.weeklyTemplate.definition));
+  const examples = Object.keys(zip.files).filter((name) => name.startsWith(prefix) && name.endsWith(".md") && !name.endsWith("README.md"));
+  for (const name of examples) {
+    const copy = await zip.file(name)!.async("string");
+    expect(copy).not.toMatch(/^:::(?:contact|credits)\b/m);
+    const rendered = await page.evaluate((copy) => window.opTest.weeklyTemplate.renderHelloWeek(copy), copy);
+    expect(rendered.html).toContain('data-layout-module="weekly-contact"');
+    expect(rendered.html).toContain('data-layout-module="weekly-credits"');
+  }
 });

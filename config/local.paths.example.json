@@ -1,0 +1,7 @@
+{
+  "rss_backend": "we-mp-rss",
+  "rss_root": "D:/services/we-mp-rss",
+  "rss_data_dir": "D:/private-data/opslion-rss",
+  "rss_python": "D:/private-data/opslion-rss/.venv/Scripts/python.exe",
+  "rss_url": "http://127.0.0.1:8001"
+}

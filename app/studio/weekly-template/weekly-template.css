@@ -28,3 +28,10 @@
 .weekly-flow-note { font-size:12px; color:var(--muted); line-height:1.9; margin-top:16px; }
 @media (max-width:980px) { .hello-week-workbench { grid-template-columns:minmax(190px,250px) minmax(0,1fr); gap:16px; } .hello-week-info { padding:18px; } .hello-week-viewport { padding:20px 8px; } }
 @media (max-width:680px) { .hello-week-workbench { grid-template-columns:minmax(0,1fr); } .hello-week-preview > .weekly-panel-head { flex-wrap:wrap; } .hello-week-info { gap:14px; } .hello-week-template-info h4 { font-size:24px; } .hello-week-viewport { padding:12px 0; max-height:75dvh; } .hello-week-preview-toolbar { padding:10px; gap:8px; } }
+
+.hello-week-fixed-settings { border-top:1px solid var(--line); padding-top:14px; }
+.hello-week-fixed-settings p { font-size:12px; line-height:1.8; color:var(--muted); margin:8px 0; }
+.hello-week-fixed-settings form, .hello-week-fixed-settings label { display:grid; gap:8px; }
+.hello-week-fixed-settings form { gap:14px; margin-top:12px; }
+.hello-week-fixed-settings label { font-size:12px; }
+.hello-week-fixed-settings input { width:100%; min-width:0; padding:9px; border:1px solid var(--line); border-radius:6px; background:var(--paper); color:var(--ink); font:inherit; }

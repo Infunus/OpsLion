@@ -26,13 +26,14 @@ import * as workflowDocument from "../../app/studio/workflow/document";
 import * as workflowDecisions from "../../app/studio/workflow/layout-decisions";
 import { planLocalSubmission } from "../../app/studio/workflow/local-planner";
 import { localCandidate } from "../../app/studio/workflow/run-layout";
+import * as weeklyFixedContent from "../../app/studio/weekly-template/fixed-content";
 import * as weeklyTemplate from "../../app/studio/weekly-template/render";
 import * as weeklyExamples from "../../app/studio/weekly-template/examples";
 import * as weeklyExport from "../../app/studio/weekly-template/export";
 import { helloWeekDefinition } from "../../app/studio/weekly-template/definition";
 import "../../app/globals.css";
 import "../../app/studio/workspace.css";
-const api = { ...storage, ...types, ...policy, ...renderer, ...clone, ...schemas, requestJson, layoutEngine, semanticAgent, extractWordSnapshot, importDocx, wordConversion, localFill, submission: { ...submissionTypes, ...submissionAssembly, ...submissionIngest, ...submissionBaseline, ...submissionProject }, createExportActions, bridge, workflow: { ...workflowDocument, ...workflowDecisions, planLocalSubmission, localCandidate }, weeklyTemplate: { ...weeklyTemplate, ...weeklyExamples, ...weeklyExport, definition: helloWeekDefinition } };
+const api = { ...storage, ...types, ...policy, ...renderer, ...clone, ...schemas, requestJson, layoutEngine, semanticAgent, extractWordSnapshot, importDocx, wordConversion, localFill, submission: { ...submissionTypes, ...submissionAssembly, ...submissionIngest, ...submissionBaseline, ...submissionProject }, createExportActions, bridge, workflow: { ...workflowDocument, ...workflowDecisions, planLocalSubmission, localCandidate }, weeklyTemplate: { ...weeklyTemplate, ...weeklyFixedContent, ...weeklyExamples, ...weeklyExport, definition: helloWeekDefinition } };
 declare global { interface Window { opTest: typeof api } }
 window.opTest = api;
 // The bare harness lets storage/security tests run without mounting autosave.

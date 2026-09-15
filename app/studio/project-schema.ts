@@ -46,6 +46,8 @@ export const projectSchema = z.object({
 export const savedTemplateSchema = z.object({ id, name: text, template: cloneTemplateSchema, createdAt: date, updatedAt: date });
 export const weeklyDraftSchema = z.object({
   preparedCopy: z.object({ name: text, format: z.enum(["markdown", "text"]), text, importedAt: date }).nullable().default(null),
+  startDate: text.default(""), endDate: text.default(""),
+  pendingExport: z.object({ jobId: id, startDate: text, endDate: text }).nullable().default(null),
 });
 export type WeeklyDraft = z.infer<typeof weeklyDraftSchema>;
 export function parseProjectFile(payload: unknown): StudioProject {

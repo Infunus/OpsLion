@@ -1,2 +1,7 @@
 # Windows cmd.exe launchers require CRLF, including when cloned with core.autocrlf=false.
 *.bat text eol=crlf
+*.ps1 text eol=crlf
+# Keep extension sources byte-identical to the downloadable archive after cloning.
+integrations/xiumi-bridge/*.js text eol=lf
+integrations/xiumi-bridge/*.html text eol=lf
+integrations/xiumi-bridge/*.json text eol=lf

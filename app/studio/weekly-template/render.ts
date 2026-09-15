@@ -1,3 +1,4 @@
+import { applyHelloWeekTemplate, type WeeklyFixedContent } from "./fixed-content";
 import { safeImageUrl, safeLinkUrl, sanitizeArticleHtml } from "../html-policy";
 import { helloWeekDefinition as definition, type HelloWeekDocument, type WeeklyModule } from "./definition";
 import { parseHelloWeek, WeeklyFormatError } from "./parse";
@@ -55,7 +56,7 @@ function inline(text: string, line: number, nested = false): { html: string; lin
         if (!href || /\s/.test(link.url)) throw new WeeklyFormatError("原文链接需要完整的 HTTP(S) 地址", line);
         const label = inline(link.label, line, true);
         if (!link.label.trim()) throw new WeeklyFormatError("原文链接文字为空", line);
-        html += `<a href="${escape(href)}" style="color:#337ab7;text-decoration:underline;overflow-wrap:anywhere;">${label.html}</a>`; links++; index = link.end; continue;
+        html += `<a href="${escape(href)}" style="color:#337ab7;text-decoration:none;overflow-wrap:anywhere;">${label.html}</a>`; links++; index = link.end; continue;
       }
     }
     const mark = text.startsWith("**", index) ? "**" : text[index] === "`" ? "`" : "";
@@ -131,7 +132,7 @@ function renderModule(module: WeeklyModule, document: HelloWeekDocument) {
   const title = inline(module.title, module.line).html;
   const intro = '#include <this week>\n#include <next week>\nusing namespace Weekly;\nclass Contribution; // 投稿类\nclass Academic; // 学术类\nclass Activities; // 活动类\nclass Notification; // 其他信息\nint main()\n{\n' + (module.title === "semester-end" ? '  atexit(EndOfSpringSemester());\n' : '') + '  printf("欢迎来到Hello Week!\\n");\n  printf("让我们一起\\n");\n  printf("来看看本期的重要信息吧\\n");';
   const code = module.kind === "code-intro" ? intro : module.kind === "code-outro" ? '  printf("我们下期再见!");\n  return 0;\n}' : module.kind === "transition" ? module.body.split("\n").map((line) => `  printf(${JSON.stringify(line + "\n")});`).join("\n") : module.body;
-  const body = module.kind === "credits" ? module.body.split("\n").map((line, index) => `<p style="margin:0 0 6px;">${inline(line, module.bodyLine + index).html}</p>`).join("") : rendered.html;
+  const body = rendered.html;
   const content = frame(spec.frame, {
     title, body,
     heading: title ? `<p style="margin:0 0 14px;font-weight:600;">${title}</p>` : "",
@@ -144,8 +145,8 @@ function renderModule(module: WeeklyModule, document: HelloWeekDocument) {
   return `<section class="tn-comp-top-level" data-layout-module="weekly-${module.kind}" style="box-sizing:border-box;max-width:100%;">${content}</section>`;
 }
 
-export function renderHelloWeek(text: string) {
+export function renderHelloWeek(text: string, settings?: WeeklyFixedContent) {
   const document = parseHelloWeek(text), layout = definition.layouts[document.layout];
-  const html = sanitizeArticleHtml(frame(definition.pageFrame, { padding: layout.padding, letterSpacing: layout.letterSpacing, modules: document.modules.map((module) => renderModule(module, document)).join("") }));
-  return { html, title: document.title, templateId: document.template, layout: document.layout, moduleCount: document.modules.length, newsCount: document.modules.filter((module) => module.kind === "news").length };
+  const html = applyHelloWeekTemplate(sanitizeArticleHtml(frame(definition.pageFrame, { padding: layout.padding, letterSpacing: layout.letterSpacing, modules: document.modules.filter((module) => module.kind !== "contact" && module.kind !== "credits").map((module) => renderModule(module, document)).join("") })), settings);
+  return { html, title: document.title, templateId: document.template, layout: document.layout, moduleCount: document.modules.filter((module) => module.kind !== "contact" && module.kind !== "credits").length + 2, newsCount: document.modules.filter((module) => module.kind === "news").length };
 }

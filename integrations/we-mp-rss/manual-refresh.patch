@@ -1,0 +1,579 @@
+--- a/apis/mps.py
++++ b/apis/mps.py
+@@ -346,6 +346,9 @@
+      end_page: int = 1,
+     current_user: dict = Depends(get_current_user_or_ak)
+ ):
++    from core.manual_refresh import get_manual_refresh_tasks
++    if not 0 <= start_page < end_page or end_page - start_page > 1000:
++        return error_response(code=40001, message="页码范围无效，起始页须小于结束页，单次最多 1000 页")
+     session = DB.get_session()
+     try:
+         from core.models.feed import Feed
+@@ -366,46 +369,38 @@
+                     message="请不要频繁更新操作",
+                     data={"time_span":time_span}
+                 )
+-        # 同步采集，等待结果返回；失败时把真实原因透出给前端，
+-        # 避免「异步线程 + 异常被吞」导致前端只看到“刷新成功”但实际 0 篇入库。
+-        from core.wx import WxGather
+-        wx = WxGather().Model()
+-        try:
+-            wx.get_Articles(
+-                mp.faker_id,
+-                Mps_id=mp.id,
+-                Mps_title=mp.mp_name,
+-                CallBack=UpdateArticle,
+-                start_page=start_page,
+-                MaxPage=end_page,
+-            )
+-        except Exception as e:
+-            err = str(e)
+-            # 微信读书登录态失效等，给出可操作的明确提示
+-            hint = ""
+-            if any(k in err for k in ("401", "鉴权", "-2013", "-2012", "登录超时", "登录态")):
+-                hint = " 微信读书 Cookie 已失效，请到「微信读书管理」页重新扫码授权或更新 Cookie。"
+-            print(f"更新公众号文章失败 [{mp.mp_name}]: {err}")
+-            return error_response(
+-                code=50002,
+-                message=f"更新「{mp.mp_name}」失败: {err}{hint}",
+-                data={"mp_id": mp_id},
+-            )
+-        return success_response({
+-            "time_span":time_span,
+-            "list":wx.articles,
+-            "total":len(wx.articles),
+-            "mps":mp
+-        })
++        task = get_manual_refresh_tasks().submit(
++            {"id": mp.id, "mp_name": mp.mp_name, "faker_id": mp.faker_id}, start_page, end_page
++        )
++        return success_response(task, message="已加入采集队列")
++    except ValueError as e:
++        return error_response(code=40002, message=str(e))
+     except Exception as e:
+         print(f"更新公众号文章: {str(e)}",e)
+         raise HTTPException(
+             status_code=status.HTTP_201_CREATED,
+             detail=error_response(
+                 code=50001,
+-                message=f"更新公众号文章{str(e)}"
+-            )
+-        )
++                message="采集任务提交失败，请检查 RSS 服务日志"
++            )
++        )
++    finally:
++        session.close()
++
++
++@router.get("/update/tasks/{task_id}", summary="查询手动采集进度")
++async def manual_refresh_status(task_id: str, current_user: dict = Depends(get_current_user_or_ak)):
++    from core.manual_refresh import get_manual_refresh_tasks
++    task = get_manual_refresh_tasks().get(task_id)
++    if task is None:
++        return error_response(code=40404, message="采集任务不存在")
++    return success_response(task)
++
++
++@router.get("/update/latest/{mp_id}", summary="查询公众号最近一次手动采集")
++async def latest_manual_refresh(mp_id: str, current_user: dict = Depends(get_current_user_or_ak)):
++    from core.manual_refresh import get_manual_refresh_tasks
++    return success_response({"task": get_manual_refresh_tasks().latest(mp_id)})
+ 
+ @router.get("/{mp_id}", summary="获取公众号详情")
+ async def get_mp(
+--- /dev/null
++++ b/core/manual_refresh.py
+@@ -0,0 +1,214 @@
++"""Track manual refreshes while using the original collector and task queue."""
++from copy import deepcopy
++from datetime import datetime, timezone
++import json
++from pathlib import Path
++import threading
++from urllib.parse import urlsplit
++from uuid import uuid4
++
++
++class RefreshFailure(Exception):
++    pass
++
++
++class PageObserver:
++    def __init__(self, progress):
++        self.progress = progress
++        self.pages = 0
++        self.empty = False
++        self.error = None
++
++    def __call__(self, response, *args, **kwargs):
++        url = urlsplit(response.url)
++        if url.hostname != 'mp.weixin.qq.com' or url.path not in (
++            '/cgi-bin/appmsgpublish', '/cgi-bin/appmsg'
++        ):
++            return
++        try:
++            body = response.json()
++            code = body['base_resp']['ret']
++            if code == 200013:
++                self.error = '微信返回 200013：请求频率受限，请稍后重试'
++            elif code == 200003:
++                self.error = '微信返回 200003：授权已过期，请点击刷新授权重新扫码'
++            elif code != 0:
++                self.error = f'微信采集接口返回错误 {code}'
++            else:
++                if 'publish_page' in body:
++                    page = body['publish_page']
++                    page = json.loads(page) if isinstance(page, str) else page
++                    entries = page['publish_list']
++                else:
++                    entries = body['app_msg_list']
++                if not isinstance(entries, list):
++                    raise ValueError()
++                self.error = None  # A successful native retry resolves the earlier response error.
++                self.pages += 1
++                self.empty = self.empty or not entries
++                self.progress(self.pages)
++        except (KeyError, TypeError, ValueError):
++            self.error = '微信未返回有效文章列表，本次采集未完成'
++
++    def verify(self, expected_pages, article_count):
++        if self.error:
++            raise RefreshFailure(self.error)
++        if not self.pages or (self.pages < expected_pages and not self.empty):
++            raise RefreshFailure('采集提前结束，未取得全部文章页，请检查网络或授权状态')
++        if not article_count and not self.empty:
++            raise RefreshFailure('取得了文章页但未能解析文章，本次采集未完成')
++
++
++def timestamp():
++    return datetime.now(timezone.utc).isoformat(timespec='seconds')
++
++
++class ManualRefreshTasks:
++    def __init__(self, state_path, enqueue=None, collect=None):
++        self.path = Path(state_path)
++        self.lock = threading.RLock()
++        self.enqueue = enqueue
++        self.collect = collect or self._collect
++        self.tasks = json.loads(self.path.read_text(encoding='utf-8')) if self.path.exists() else {}
++        for task in self.tasks.values():
++            if task['status'] in ('pending', 'running'):
++                task.update(status='interrupted', message='RSS 服务已重启，采集未完成，请重新刷新', finished_at=timestamp())
++        if self.tasks:
++            self._save()
++
++    def _save(self):
++        self.path.parent.mkdir(parents=True, exist_ok=True)
++        temporary = self.path.with_suffix('.tmp')
++        temporary.write_text(json.dumps(self.tasks, ensure_ascii=False), encoding='utf-8')
++        temporary.replace(self.path)
++
++    def update(self, task_id, **values):
++        with self.lock:
++            self.tasks[task_id].update(values)
++            self._save()
++
++    def get(self, task_id):
++        with self.lock:
++            return deepcopy(self.tasks.get(task_id))
++
++    def latest(self, mp_id):
++        with self.lock:
++            return next((deepcopy(task) for task in reversed(list(self.tasks.values()))
++                         if task['mp_id'] == mp_id), None)
++
++    def submit(self, feed, start_page, end_page):
++        # The native API uses a zero-based start and an exclusive end.
++        if not 0 <= start_page < end_page or end_page - start_page > 1000:
++            raise ValueError('页码范围无效：起始页须小于结束页，单次最多采集 1000 页')
++        with self.lock:
++            if any(task['mp_id'] == feed['id'] and task['status'] in ('pending', 'running')
++                   for task in self.tasks.values()):
++                raise ValueError('该公众号已有采集任务，请等待完成')
++            if len(self.tasks) >= 100:
++                for task_id in list(self.tasks):
++                    if self.tasks[task_id]['status'] not in ('pending', 'running'):
++                        del self.tasks[task_id]
++                        break
++                else:
++                    raise ValueError('采集队列已满，请等待已有任务完成')
++            task_id = uuid4().hex
++            self.tasks[task_id] = {
++                'task_id': task_id, 'mp_id': feed['id'], 'mp_name': feed['mp_name'],
++                'status': 'pending', 'message': '已加入采集队列，等待执行',
++                'start_page': start_page + 1, 'end_page': end_page,
++                'current_page': start_page + 1, 'pages_received': 0, 'article_count': 0,
++                'created_at': timestamp(),
++            }
++            self._save()
++            try:
++                if self.enqueue is None:
++                    from core.queue import TaskQueue
++                    enqueue = TaskQueue.add_task
++                else:
++                    enqueue = self.enqueue
++                accepted = enqueue(self.run, task_id, feed, start_page, end_page,
++                                   task_name=f"手动刷新 · {feed['mp_name']} · {task_id[:6]}", max_retries=0)
++                if not accepted:
++                    raise ValueError('采集队列未接受任务，请稍后重试')
++            except Exception:
++                self.update(task_id, status='failed', message='加入采集队列失败，请稍后重试', finished_at=timestamp())
++                raise
++            return self.get(task_id)
++
++    def run(self, task_id, feed, start_page, end_page):
++        self.update(task_id, status='running', started_at=timestamp(), message=f'正在采集第 {start_page + 1} 页')
++        try:
++            self.collect(task_id, feed, start_page, end_page)
++            count = self.get(task_id)['article_count']
++            self.update(task_id, status='success', finished_at=timestamp(),
++                        message=f'采集完成，处理 {count} 篇文章' if count else '采集完成，所选页没有文章或没有新增文章')
++        except Exception as error:
++            message = str(error) if isinstance(error, RefreshFailure) else '采集执行失败，请检查 RSS 服务日志'
++            self.update(task_id, status='failed', message=message, finished_at=timestamp())
++            # The original queue must also record failure instead of success.
++            raise RefreshFailure(message) from None
++
++    def _collect(self, task_id, feed, start_page, end_page):
++        from core.config import cfg
++        from core.wx import WxGather
++        from core.db import DB
++        from core.models.article import Article
++        from jobs.article import UpdateArticle
++
++        engine = WxGather().Model()
++        seen = set()
++
++        def page_received(count):
++            page = start_page + count
++            self.update(task_id, current_page=page, pages_received=count,
++                        message=f'正在处理第 {page} 页，已处理 {len(seen)} 篇文章')
++
++        observer = PageObserver(page_received)
++
++        def save(article):
++            saved = UpdateArticle(article)
++            expected_id = f"{feed['id']}-{article['id']}".replace('MP_WXS_', '')
++            with DB.get_session() as session:
++                stored = session.query(Article.id).filter(
++                    (Article.id == expected_id) | (Article.url == article['url'])
++                ).first()
++            if stored is None:
++                raise RefreshFailure('文章保存失败，本次采集未完成')
++            seen.add(str(article['id']))
++            self.update(task_id, article_count=len(seen),
++                        message=(f'正在处理第 {start_page + observer.pages} 页，已处理 {len(seen)} 篇文章'
++                                 if observer.pages else f'正在处理文章，已处理 {len(seen)} 篇'))
++            return saved
++
++        hooks = engine.session.hooks.setdefault('response', [])
++        hooks.append(observer)
++        try:
++            engine.get_Articles(faker_id=feed['faker_id'], Mps_id=feed['id'], Mps_title=feed['mp_name'],
++                                CallBack=save, start_page=start_page, MaxPage=end_page,
++                                interval=int(cfg.get('interval', 10)))
++            if not getattr(engine, 'response_valid', False):
++                observer.verify(end_page - start_page, len(seen))
++        except Exception as error:
++            if observer.error:
++                raise RefreshFailure(observer.error) from None
++            code = getattr(error, 'code', None)
++            if code in ('missing_cookie', -2012, -2013, -2041, -2010, 401):
++                raise RefreshFailure(f'微信读书授权不可用（{code}），请到微信读书管理中扫码授权') from None
++            if code:
++                raise RefreshFailure(f'原版采集未完成（{code}），请检查采集设置和登录状态') from None
++            raise
++        finally:
++            hooks.remove(observer)
++            engine.session.close()
++
++
++_tasks = None
++_tasks_lock = threading.Lock()
++
++
++def get_manual_refresh_tasks():
++    global _tasks
++    with _tasks_lock:
++        if _tasks is None:
++            _tasks = ManualRefreshTasks(Path('data/manual-refresh-tasks.json'))
++        return _tasks
+--- a/web_ui/src/api/subscription.ts
++++ b/web_ui/src/api/subscription.ts
+@@ -89,13 +89,32 @@
+   return http.delete<{code: number, message: string}>(`/wx/mps/${mp_id}`)
+ }
+ 
+-// 更新订阅公众号文章列表 
++export interface ManualRefreshTask {
++  task_id: string
++  mp_id: string
++  mp_name: string
++  status: 'pending' | 'running' | 'success' | 'failed' | 'interrupted'
++  message: string
++  start_page: number
++  end_page: number
++  current_page: number
++  pages_received: number
++  article_count: number
++}
++
++export const getManualRefreshTask = (taskId: string) =>
++  http.get<ManualRefreshTask, ManualRefreshTask>(`/wx/mps/update/tasks/${encodeURIComponent(taskId)}`)
++
++export const getLatestManualRefresh = (mpId: string) =>
++  http.get<{ task: ManualRefreshTask | null }, { task: ManualRefreshTask | null }>(`/wx/mps/update/latest/${encodeURIComponent(mpId)}`).then(result => result.task)
++
++// 更新订阅公众号文章列表。接口页码为零基起始页、排他的结束页。
+ export const UpdateMps = (mp_id: string,params: { start_page?: number; end_page?: number }) => {
+    const apiParams = {
+     start_page: (params?.start_page || 0),
+     end_page: params?.end_page || 1
+   }
+-  return http.get<{code: number, message: string}>(`/wx/mps/update/${mp_id||'all'}?start_page=${apiParams.start_page}&end_page=${apiParams.end_page}`)
++  return http.get<ManualRefreshTask, ManualRefreshTask>(`/wx/mps/update/${encodeURIComponent(mp_id)}?start_page=${apiParams.start_page}&end_page=${apiParams.end_page}`)
+ }
+ 
+ // 更新订阅公众号信息
+--- /dev/null
++++ b/web_ui/src/components/ManualRefresh.vue
+@@ -0,0 +1,129 @@
++<template>
++  <a-button @click="visible = true">
++    <template #icon><icon-refresh /></template>
++    {{ running ? '查看采集进度' : '刷新' }}
++  </a-button>
++  <a-modal v-model:visible="visible" title="刷新设置与采集进度" :mask-closable="false">
++    <a-form :model="form" layout="vertical">
++      <a-form-item label="起始页（从 1 开始）">
++        <a-input-number v-model="form.startPage" :min="1" :precision="0" :disabled="running || submitting" />
++      </a-form-item>
++      <a-form-item label="结束页（包含这一页）">
++        <a-input-number v-model="form.endPage" :min="form.startPage || 1" :precision="0" :disabled="running || submitting" />
++      </a-form-item>
++    </a-form>
++    <a-alert v-if="task" :type="taskType" style="margin-bottom: 12px;" role="status">
++      <template #title>{{ taskTitle }}</template>
++      {{ task.message }}
++      <div v-if="task.status !== 'pending'" style="margin-top: 6px;">
++        页码 {{ task.start_page }}–{{ task.end_page }} · 已处理 {{ task.article_count }} 篇文章
++      </div>
++    </a-alert>
++    <a-alert v-if="error" type="error" style="margin-bottom: 12px;">{{ error }}</a-alert>
++    <a-alert v-if="pollError" type="warning">暂时无法读取进度，正在自动重试。{{ pollError }}</a-alert>
++    <a-typography-text type="secondary">任务提交后会持续显示进度；关闭窗口后采集仍会继续。</a-typography-text>
++    <template #footer>
++      <a-button @click="visible = false">关闭</a-button>
++      <a-button type="primary" :loading="submitting" :disabled="running || loadingLatest" @click="startRefresh">
++        {{ running ? '采集中' : '开始采集' }}
++      </a-button>
++    </template>
++  </a-modal>
++</template>
++
++<script setup lang="ts">
++import { computed, onBeforeUnmount, ref, watch } from 'vue'
++import { IconRefresh } from '@arco-design/web-vue/es/icon'
++import { Message } from '@arco-design/web-vue'
++import { UpdateMps, getManualRefreshTask, getLatestManualRefresh, type ManualRefreshTask } from '@/api/subscription'
++
++const props = defineProps<{ mpId: string }>()
++const emit = defineEmits<{ (event: 'complete'): void }>()
++const visible = ref(false)
++const submitting = ref(false)
++const loadingLatest = ref(false)
++const form = ref({ startPage: 1, endPage: 1 })
++const task = ref<ManualRefreshTask | null>(null)
++const error = ref('')
++const pollError = ref('')
++const running = computed(() => task.value?.status === 'pending' || task.value?.status === 'running')
++const taskType = computed(() => task.value?.status === 'success' ? 'success' : running.value ? 'info' : 'error')
++const taskTitle = computed(() => ({ pending: '等待采集', running: '正在采集', success: '采集完成', failed: '采集失败', interrupted: '采集中断' })[task.value?.status || 'pending'])
++let generation = 0
++let timer: ReturnType<typeof setTimeout> | undefined
++
++function errorText(value: unknown) {
++  return typeof value === 'string' ? value : (value as { message?: string })?.message || '请求失败'
++}
++
++function stopPolling() {
++  generation += 1
++  if (timer) clearTimeout(timer)
++}
++
++async function poll(taskId: string, version: number) {
++  try {
++    const next = await getManualRefreshTask(taskId)
++    if (version !== generation) return
++    task.value = next
++    pollError.value = ''
++    if (!running.value) {
++      emit('complete')
++      if (next.status === 'success') Message.success(next.message)
++      else Message.error(next.message)
++      return
++    }
++  } catch (failure) {
++    if (version !== generation) return
++    pollError.value = errorText(failure)
++  }
++  timer = setTimeout(() => poll(taskId, version), 2000)
++}
++
++async function startRefresh() {
++  const { startPage, endPage } = form.value
++  if (!Number.isInteger(startPage) || !Number.isInteger(endPage) || startPage < 1 || endPage < startPage || endPage - startPage >= 1000) {
++    error.value = '请输入有效页码，结束页不能早于起始页，单次最多 1000 页'
++    return
++  }
++  stopPolling()
++  const version = generation
++  submitting.value = true
++  error.value = ''
++  pollError.value = ''
++  try {
++    const next = await UpdateMps(props.mpId, { start_page: startPage - 1, end_page: endPage })
++    if (version !== generation) return
++    if (!next?.task_id) throw new Error('RSS 后端未提供采集进度，请更新 RSS 接入并重启服务')
++    task.value = next
++    Message.info('已提交采集任务')
++    void poll(next.task_id, version)
++  } catch (failure) {
++    if (version === generation) error.value = errorText(failure)
++  } finally {
++    if (version === generation) submitting.value = false
++  }
++}
++
++watch(() => props.mpId, async (mpId) => {
++  stopPolling()
++  const version = generation
++  task.value = null
++  error.value = ''
++  pollError.value = ''
++  submitting.value = false
++  loadingLatest.value = true
++  try {
++    const latest = await getLatestManualRefresh(mpId)
++    if (version !== generation) return
++    task.value = latest
++    if (latest && running.value) void poll(latest.task_id, version)
++  } catch (failure) {
++    if (version === generation) error.value = errorText(failure)
++  } finally {
++    if (version === generation) loadingLatest.value = false
++  }
++}, { immediate: true })
++
++onBeforeUnmount(stopPolling)
++</script>
+--- a/web_ui/src/views/article/ArticleListDesktop.vue
++++ b/web_ui/src/views/article/ArticleListDesktop.vue
+@@ -107,10 +107,7 @@
+                 导出
+               </a-button>
+               <ExportModal ref="exportModal"  />
+-              <a-button @click="refresh" v-if="activeFeed?.id != '' && activeFeed?.id !== FEATURED_MP_ID">
+-                <template #icon><icon-refresh /></template>
+-                刷新
+-              </a-button>
++              <ManualRefresh v-if="activeMpId && activeMpId !== FEATURED_MP_ID" :mp-id="activeMpId" @complete="fetchArticles" />
+               <a-dropdown>
+                 <a-button v-if="activeFeed?.id == ''">
+                   <template #icon><icon-delete /></template>
+@@ -246,20 +243,7 @@
+           </a-table>
+ 
+ 
+-          <a-modal v-model:visible="refreshModalVisible" title="刷新设置">
+-            <a-form :model="refreshForm" :rules="refreshRules">
+-              <a-form-item label="起始页" field="startPage">
+-                <a-input-number v-model="refreshForm.startPage" :min="1" />
+-              </a-form-item>
+-              <a-form-item label="结束页" field="endPage">
+-                <a-input-number v-model="refreshForm.endPage" :min="1" />
+-              </a-form-item>
+-            </a-form>
+-            <template #footer>
+-              <a-button @click="refreshModalVisible = false">取消</a-button>
+-              <a-button type="primary" @click="handleRefresh">确定</a-button>
+-            </template>
+-          </a-modal>
++
+           <a-modal v-model:visible="featuredArticleModalVisible" title="添加精选文章">
+             <a-form>
+               <a-form-item label="文章链接">
+@@ -357,7 +341,8 @@
+ import { getArticles, deleteArticle as deleteArticleApi, ClearArticle, ClearDuplicateArticle, getArticleDetail, getRefreshArticleTaskStatus, refreshArticle as refreshArticleApi, toggleArticleFavoriteStatus, toggleArticleReadStatus, cleanOldArticles } from '@/api/article'
+ import { ExportOPML, ExportMPS, ImportMPS } from '@/api/export'
+ import ExportModal from '@/components/ExportModal.vue'
+-import { addFeaturedArticle, getFeaturedArticleTaskStatus, getSubscriptions, UpdateMps, toggleMpStatus as toggleMpStatusApi } from '@/api/subscription'
++import ManualRefresh from '@/components/ManualRefresh.vue'
++import { addFeaturedArticle, getFeaturedArticleTaskStatus, getSubscriptions, toggleMpStatus as toggleMpStatusApi } from '@/api/subscription'
+ import { inject } from 'vue'
+ import { Message, Modal } from '@arco-design/web-vue'
+ import { formatDateTime, formatTimestamp } from '@/utils/date'
+@@ -1069,45 +1054,10 @@
+   })
+ }
+ 
+-const refreshModalVisible = ref(false)
+-const refreshForm = ref({
+-  startPage: 0,
+-  endPage: 1
+-})
+-const refreshRules = {
+-  startPage: [{ required: true, message: '请输入开始页码' }],
+-  endPage: [{ required: true, message: '请输入结束页码' }]
+-}
+-
+-const showRefreshModal = () => {
+-  refreshModalVisible.value = true
+-}
+-
+-const handleRefresh = () => {
+-  fullLoading.value = true
+-  UpdateMps(activeMpId.value, {
+-    start_page: refreshForm.value.startPage,
+-    end_page: refreshForm.value.endPage
+-  }).then((res: any) => {
+-    // 接口已同步完成采集，立即刷新列表展示新文章
+-    const count = res?.total ?? res?.data?.total
+-    Message.success(count !== undefined && count !== null ? `刷新成功，新增 ${count} 篇` : '刷新成功')
+-    refreshModalVisible.value = false
+-    fetchArticles()
+-  }).catch((err: any) => {
+-    // 业务错误（如微信读书 Cookie 失效）已由 http 拦截器统一弹窗，这里只兜底网络异常
+-    if (typeof err !== 'object' || !err?.message) {
+-      Message.error(String(err || '刷新失败'))
+-    }
+-  }).finally(() => {
+-    fullLoading.value = false
+-  })
+-}
+ const clear_articles = () => {
+   fullLoading.value = true
+   ClearArticle().then((res) => {
+     Message.success(res?.message || '清理成功')
+-    refreshModalVisible.value = false
+   }).finally(() => {
+     fullLoading.value = false
+   })
+@@ -1117,15 +1067,10 @@
+   fullLoading.value = true
+   ClearDuplicateArticle().then((res) => {
+     Message.success(res?.message || '清理成功')
+-    refreshModalVisible.value = false
+   }).finally(() => {
+     fullLoading.value = false
+   })
+   fetchArticles()
+-}
+-
+-const refresh = () => {
+-  showRefreshModal()
+ }
+ 
+ const showAddModal = () => {

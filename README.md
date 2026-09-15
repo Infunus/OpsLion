@@ -20,7 +20,8 @@ Xiumi Bridge 安装在 Chrome 或 Edge 中，负责获取模板和导入成稿
 ### 安装插件
 
 - **找到插件位置**
-  - 插件在 `public\downloads\xiumi-bridge-extension`
+  - 下载 [插件压缩包](public/downloads/xiumi-bridge-extension.zip)，仓库内位置为 `public\downloads\xiumi-bridge-extension.zip`
+  - 先解压到同名文件夹，确认其中直接包含 `manifest.json`
 - **打开浏览器扩展管理页**
   - Chrome 在地址栏输入 `chrome://extensions/`
   - Edge 在地址栏输入 `edge://extensions/`
@@ -85,7 +86,8 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 ### 准备使用环境
 
 - 使用能够上传附件、解压文件并运行 Python 的网页模型对话（如 GPT）
-- 用于自动化排版的 skill 是 `skills\Xiumi_Layout_Skill.zip`
+- 使用 [秀米排版 Skill](skills/Xiumi_Layout_Skill.zip)，仓库内位置为 `skills\Xiumi_Layout_Skill.zip`
+- 周报文案使用 [Hello Week Skill](skills/Hello_Week_Skill.zip)，配合周报页面提供的模板与文案示例
 
 ### 上传文件
 
@@ -179,6 +181,8 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 - **启动排版台**
   - 双击 `启动排版台.bat`
   - 首次启动需要联网安装依赖，等待命令窗口完成后会打开浏览器
+  - 启动脚本会重启先前运行的 OpsLion 服务；默认浏览器打开排版台
+  - 只使用周报采集时，也可以双击 `启动公众号采集.bat`
   - 浏览器没有自动打开时，访问 `http://127.0.0.1:3000`
 
 - **结束使用**
@@ -191,7 +195,7 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 - 在打开的窗口中运行以下命令，查看完整报错
 
   ```powershell
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-local.ps1 -ForceRestart
   ```
 
 - 提示找不到 Node.js、npm 或 Python 时，重新检查安装结果
@@ -203,7 +207,9 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 
 - **选择模板**
   - 进入 **快速排版 → 模板库**
+  - 新安装的普通文章模板库为空；点击 **导入模板包** 或 **导入第一个模板**，选择已有的 `*.opslion-layout-template.json` 文章模板包
   - 选择模板并查看预览，点击 **套用到当前文章**
+  - 插件抓取的 `*.opslion-template.json` 从 **样式复刻 → 从文件读取** 导入，具体见下文；Hello Week 模板直接在 **周报** 中使用
 
 - **导入 Word**
   - 点击 **导入 Word**，选择 `.docx` 文件
@@ -253,6 +259,10 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 
 ### 手工修改
 
+- **切换预览与编辑**
+  - 在中间画布顶部点击 **预览 / 编辑**，切换查看成稿或修改内容
+  - 周报在独立页面导入文案、自动排版和预览；修改文案后重新导入
+
 - **文字和内容顺序**
   - 文章模板在左侧编辑区修改文字、增加或删除内容、调整顺序
   - 历史模板使用 **逐项替换** 和 **模块结构**
@@ -286,21 +296,143 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 
 ### AI 增强
 
-- 打开 **模型设置**，填写兼容 OpenAI 接口的 API 地址、模型名称和 API Key
+- 打开 **模型设置**，先选择 **模型服务商**，再填写该平台的模型 ID 和 API Key；按所用地域或服务修改 API 地址
+- 当前提供 OpenAI、Anthropic / Claude、Google / Gemini、DeepSeek、通义千问、豆包、Kimi、GLM 等厂商，以及 OpenRouter、硅基流动、Ollama 等平台和本机服务的预设
+- 原生支持 Responses、Claude Messages、Gemini generateContent 和通用 Chat Completions 协议；自定义服务在 **高级设置 → API 协议** 中选择对应协议
 - 点击 **保存并测试**
+- 可保存多个连接，并在模型设置中切换；本机免鉴权服务的 API Key 可留空，也可在高级设置中指定密钥环境变量
 - 回到排版台，选择 **AI 增强**，再点击 **一键排版**
 - 历史模板使用左侧的 **Agent 智能套版**，查看修改对照后应用
 
-任务所需的文字和模板信息会发送到配置的模型服务，调用费用由该服务收取
+任务所需的文字和模板信息会发送到配置的模型服务，调用费用由该服务收取。密钥按连接使用 Windows 加密，保存在本机应用数据目录；保存并测试只发送固定测试消息。各平台的模型权限和兼容能力以实际测试结果为准
 
 网页端 Skills 使用网页对话中的模型，排版台的 AI 增强使用这里配置的 API
 
-### 周报
+### 周报与公众号采集
 
-- 周报采集需要接入公众号 RSS
-- 进入 **周报**，选择日期后采集推文，或导出已有推文 ZIP
-- 处理后的 `.md`、`.txt` 文案通过 **导入处理好的文案** 保存和预览
-- 当前这条文案导入流程暂不支持成品 HTML 或 Bridge 导出
+周报已内置公众号采集，**无需另行部署或配置 RSS，也无需使用采集终端**。通过系统默认浏览器的独立后台会话取得公众号文章，输出正文、配图、来源索引和资料 ZIP。上游采集代码与 MIT 许可证随项目提供，详见 [前端公众号采集说明](docs/weread-fetcher.md)。
+
+1. 进入 **周报 → 公众号采集**。首次显示 **初始化采集环境** 时点击即可，程序自动安装正文解析所需依赖；需要联网。
+2. 打开 **公众号与登录 → 扫码登录**，用微信扫描排版台显示的二维码，手机确认后自动完成登录。
+3. 粘贴该公众号的一篇文章链接并点击 **添加公众号**，或 **读取微信读书书架** 后选择公众号。
+4. 选择起止日期，点击 **采集正文并打包**，在页面查看任务进度。日常采集在后台运行，检测到人机验证时会自动打开默认浏览器。
+5. 完成后 **下载资料 ZIP** 或 **下载纯文字**；`all-text.md` 可直接交给生成文案的 Skill，并配合周报页面的 **Hello Week 模板与文案示例**。
+6. 将生成的文案通过 **导入处理好的文案** 导入，自动排版、预览，然后下载 HTML 或插件可导入的 Bridge 包。
+
+首次使用时，在 **周报 → 模板固定信息** 保存学生会公共邮箱、负责人及联系方式、落款组织。它们仅保存在本机 `%LOCALAPPDATA%/OpsLion/weekly-template.json`，之后每期自动附上。GitHub 版本不预填这些信息；文案 Skill 无需生成 `contact`、`credits`，文案、排版、校对的人名始终留空。旧文案里这两块的内容会被本机模板设置替换。
+
+Hello Week 模板定义已更新至 **1.2.0**（输入格式仍为 `hello-week/v1`）。蓝底标题统一为 16px 加粗，来源链接无下划线，箭头分隔线为黑色 16px 加粗。请使用当前 [Hello Week Skill](skills/Hello_Week_Skill.zip) 或周报页面下载的模板与文案示例。
+
+已有目录可点击 **导出已有资料**，避免重复采集目录。页面支持停止任务、刷新后继续查看进度和 **继续上次任务**；缓存正文会复用。正文或配图缺失时显示缺失清单，下载包明确标注“含缺失项”。微信读书可能延迟或遗漏收录，所选目录下载完成不代表公众号全部历史已收录；图片中的文字未做 OCR。
+
+二维码过期后可重新获取。检测到人机验证时，程序会暂停请求并**自动打开默认浏览器的验证页面**。在窗口完成验证后，登录阶段点击排版台的 **检查登录**，采集阶段点击 **继续上次任务**。窗口未弹出或误关时，可点击 **重新打开验证页面**；如窗口要求重新扫码，请在其中完成。已下载内容保留，刷新排版台不会重复弹窗。当前支持作为系统默认浏览器的 Edge、Chrome、Brave、Vivaldi 和 Chromium；不支持的默认浏览器会明确提示，切换浏览器需要在新会话扫码一次。
+
+新安装的授权、订阅和资料列表为空。浏览器登录资料、公众号名单、任务、缓存和导出默认仅保存在本机 `%LOCALAPPDATA%/OpsLion/collector/`，源码和 GitHub 版本中不附带这些内容。内置采集无需复制 `local.paths.example.json`；运行环境与支持的默认浏览器见采集说明。
+
+<details>
+<summary>高级选项：接入完整 we-mp-rss</summary>
+
+公众号 RSS 项目：[we-mp-rss 源仓库](https://github.com/rachelos/we-mp-rss) · [安装与使用说明](https://github.com/rachelos/we-mp-rss/blob/main/README.zh-CN.md)
+
+排版台接入完整 we-mp-rss，直接使用原版采集器、正文抓取、数据库、任务队列和管理界面。当前仓库已提供启动器和接入代码；完整 RSS 源码按以下说明另行安装，订阅、文章和授权资料保存在本机运行目录。详细安装、迁移和接口说明见 [RSS 接入说明](docs/rss-integration.md)。
+
+- **准备 RSS 模块**
+  - 准备 Python 3.12、Git 和 Node.js 22.13 或更新版本，取得完整 we-mp-rss 源码；当前固定上游提交 `d8feb6a42c6773d7374e03c487d3ae3426084af8`（1.5.3），已通过构建和模拟接口回归，真实采集取决于授权及接口可用性
+
+    ```powershell
+    git clone https://github.com/rachelos/we-mp-rss.git D:/services/we-mp-rss
+    git -C D:/services/we-mp-rss checkout d8feb6a42c6773d7374e03c487d3ae3426084af8
+    ```
+
+  - 在排版台目录运行安装脚本，将路径换成实际位置。脚本安装原版全部依赖和采集浏览器，应用采集进度及公众号扫码授权补丁并重建完整 Vue 界面，最后自动填写本机配置
+
+    ```powershell
+    powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/setup-rss.ps1 -Source D:/services/we-mp-rss -Runtime D:/private-data/opslion-rss -Python C:/Python312/python.exe
+    ```
+
+  - 已有原版实例可增加 `-ImportFrom D:/old/we-mp-rss`，使用全新的运行目录迁移 SQLite 数据和授权，沿用原管理员账号
+  - 本仓库的接入代码随完整服务一起运行，无需另找私有适配器；仅运行上游 `main.py` 不包含 OpsLion 接口
+
+- **填写本机配置**
+  - 安装脚本会生成 `config/local.paths.json`；手动配置时参考 `config/local.paths.example.json`，保留其他已有配置
+  - `rss_root` 填完整源码目录，`rss_data_dir` 填私有运行目录，`rss_python` 填安装了原版依赖的 Python
+
+    ```json
+    {
+      "rss_backend": "we-mp-rss",
+      "rss_root": "D:/services/we-mp-rss",
+      "rss_data_dir": "D:/private-data/opslion-rss",
+      "rss_python": "D:/private-data/opslion-rss/.venv/Scripts/python.exe",
+      "rss_url": "http://127.0.0.1:8001"
+    }
+    ```
+
+  - 路径须实际存在，运行目录须位于源码目录之外；JSON 路径使用 `/`，或将反斜杠写成 `\\`
+  - 保存后进入 **周报 → 原版 RSS（可选） → 重新连接**，排版台会启动完整 RSS，默认监听本机 `127.0.0.1:8001`
+  - 其他 RSS 提供者仍可使用 `rss_provider` 和 `rss_python` 进程协议，配置方法见接口说明
+
+- **授权并添加公众号**
+  - 点击 **周报 → 原版 RSS（可选） → 打开完整 RSS**，在原版页面登录并扫码授权
+  - 新实例的本机管理员密码见运行目录 `opslion-admin.json`；迁移实例使用原管理员账号和密码
+  - 按数据源要求使用具备授权资格的微信扫码，并在手机上确认
+  - 二维码生成失败或过期时，授权窗口会显示错误并提供 **重试**；重复点击复用当前任务。升级后重启完整 RSS，并按 **Ctrl+F5** 刷新页面；登录页持续打开失败时，检查原版运行目录 `config.yaml` 的 `proxy.enabled`、`proxy.http_url`
+  - 在原版公众号管理中通过文章链接添加订阅；授权过期时在原版重新扫码
+  - 原版定时任务、采集模式、正文补抓、RSS 输出和配置入口均已保留；实际采集仍取决于微信是否返回文章目录及正文。更改订阅后回排版台点击 **重新连接**
+  - 原版文章列表点击 **刷新** 后显示实际任务进度；采集第一页填写开始 1、结束 1，提交成功不等于采集完成
+  - 手动刷新遇到微信 `200013`（频率受限）或 `200003`（授权失效）时会停止并显示原因；扫码成功不代表文章接口已解除限制
+  - **微信读书管理** 使用独立扫码授权，公众号后台授权不能替代；公众号通道 `weread_mp` 的周报日期范围适配尚待完成，详见接入说明
+
+- **采集与导出资料**
+  - 在 **周报** 中选择开始日期和结束日期，包含两端，按北京时间计算
+  - 点击 **采集并导出 ZIP**，采集完整完成后自动打包；已有采集数据时点击 **导出已有推文 ZIP**
+  - ZIP 包含所选日期内全部已采集推文的全文、配图、来源索引和完整性清单
+  - 正文、链接或图片缺失时先展示缺失清单，可选择下载现有资料；采集失败或取消时不会自动下载
+  - 将资料包和周报模板交给别处的大模型或 Skill，生成符合 Hello Week v1 格式的文案
+
+- **导入文案、预览与导出成稿**
+  - 通过 **导入处理好的文案** 选择 UTF-8 `.md`、`.markdown` 或 `.txt` 文件
+  - 文案会原样保存，按周报模板自动排版并预览；格式不符时根据提示在原生成处修正后重新导入
+  - 排版成功后点击 **下载 Bridge 包**，得到插件可导入的 `*.xiumi.json`，也可点击 **HTML** 导出成品
+  - 未接入 RSS 时，也可以直接导入已有文案、预览和导出
+
+- **接入失败时**
+  - 显示 **尚未接入 RSS**：检查 `config/local.paths.json` 的位置及 RSS 配置
+  - 提示程序不存在或无法启动：检查源码、运行目录和 Python 路径，重新运行安装脚本；日志见运行目录 `opslion-service.log`
+  - 提示未加载 OpsLion 接口：使用仓库提供的完整服务启动器；提示密钥不符时检查运行目录的 `opslion-token.txt`
+  - 周报日期采集遇到微信 `200013` 时，由接入器统一等待 60 秒、120 秒重试当前页，等待期间可取消，持续受限后停止并保留已采集数据；`200003` 时在完整 RSS 中重新扫码
+  - **旧文章目录通道存在已知限制**：截至 2026-09-14，[上游问题 #456](https://github.com/rachelos/we-mp-rss/issues/456) 仍记录着 7 月底后“能识别公众号、取不到文章列表”的故障。`200013` 不能单独证明是短期限流，反复扫码、重装或等待重试不保证恢复；登录成功和搜索成功也不代表跨公众号文章目录可用。背景及验证范围见 [文章目录通道的已知限制](docs/rss-integration.md#文章目录通道的已知限制)
+  - 任务失败、取消或正文缺失时不自动下载，可选择导出已有推文；完整服务启动成功和微信采集成功分别显示
+  - 完整配置与接口要求见 [RSS 接入说明](docs/rss-integration.md)
+
+
+</details>
+
+---
+
+<details>
+<summary>源码验证（开发者）</summary>
+
+在项目目录的 PowerShell 中运行以下命令。测试使用合成数据；正文打包测试也需要安装采集依赖，页面中的独立运行环境不会自动成为终端使用的 Python 环境。
+
+```powershell
+npm.cmd ci
+npx.cmd playwright install chromium
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r scripts/collector-requirements.txt
+$env:Path = (Resolve-Path .\.venv\Scripts).Path + ";" + $env:Path
+npm.cmd run lint
+npm.cmd test
+npm.cmd run test:weread
+npm.cmd audit
+```
+
+原版 RSS 的真实引擎集成测试需要另行安装上游及其依赖，并设置 `OPSLION_TEST_WERSS_SOURCE`；没有该环境时会跳过这些用例。常规周报采集、资料打包及 RSS 接口模拟测试可按上面的命令运行。
+
+</details>
+
+## 许可证与第三方代码
+
+项目的许可证见 [LICENSE](LICENSE)。随项目提供的 [weread-mp-fetcher](integrations/weread-mp-fetcher/UPSTREAM.json) 保留其 [MIT 许可证](integrations/weread-mp-fetcher/LICENSE)；we-mp-rss 接入补丁的 [上游版本说明](integrations/we-mp-rss/UPSTREAM.json) 与 [MIT 许可证](integrations/we-mp-rss/LICENSE) 一并保留，完整上游源码按前文说明另行取得。
 
 ---
 
@@ -314,4 +446,4 @@ Skills 直接在网页端大模型对话中使用，模型读取说明并运行�
 
 一开始觉得这个项目应该并不困难，但是实际做了之后才感觉到也还是有一些值得思考的问题，而且我严重怀疑我的一些想法曾将 GPT 大人引向了不那么好的方向。唉不知道我的神秘想法给 GPT 大人带来了多大的限制与误导，AI 大人何时逃离原生用户？
 
-总之先草草地发上了这个第一版，肯定还有很多问题，留待未来的我和 AI 解决
+不做充分测试的下场就是像这样突然遇到意外，谁能想到就在今年 8 月 RSS 的那套方法失效了。不过好在还是有替代的方案，在 GPT 大人的研究之下已经取得成功了，并且我也实际生成了Hello Week进行验证，应该说还是有一些细节问题，但是只要改一两处字号就行了，所以我暂时也懒得查是为什么出错。总之先这样吧，至少一段时间内应该是不用为 hello week 操心了

@@ -122,6 +122,12 @@ export function StudioApp() {
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       setView(project.mode);
+      if (new URLSearchParams(window.location.search).get("workspace") === "weekly") {
+        setView("weekly"); setWeeklyVisited(true);
+        window.history.replaceState({}, "", window.location.pathname);
+        return;
+      }
+
       if (new URLSearchParams(window.location.search).get("templateImport") !== "1") return;
       try {
         const captureId = new URLSearchParams(window.location.search).get("capture") || "";

@@ -2,7 +2,7 @@
   "schema": "opslion/weekly-template/v1",
   "id": "hello-week/v1",
   "name": "Hello Week",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "input": {
     "marker": "<!-- opslion:hello-week/v1 -->",
     "title": "# 本期周报标题",
@@ -10,6 +10,18 @@
     "block": ":::模块ID 可选标题\n内容\n:::",
     "maxModules": 500,
     "maxCharacters": 1000000
+  },
+  "automaticModules": {
+    "ids": [
+      "contact",
+      "credits"
+    ],
+    "copyInstruction": "文案不生成 contact 和 credits。模板自动插入联系区与组织落款，读取本机固定信息；文案、排版、校对的人名一律留空。旧文案中的这两个模块会被模板固定内容替换。",
+    "settings": [
+      "email",
+      "contactPerson",
+      "organization"
+    ]
   },
   "layouts": {
     "classic": {
@@ -41,7 +53,7 @@
   },
   "assets": {
     "banner": {
-      "src": "/assets/hello-week/banner.png",
+      "src": "/assets/hello-week/banner.gif",
       "label": "通用栏目横幅",
       "width": "100%"
     },
@@ -56,7 +68,7 @@
       "width": "80%"
     },
     "avatar": {
-      "src": "/assets/hello-week/avatar.png",
+      "src": "/assets/hello-week/avatar.gif",
       "label": "通用栏目头像",
       "width": "24px"
     },
@@ -71,7 +83,7 @@
       "width": "12%"
     },
     "footer": {
-      "src": "/assets/hello-week/footer.png",
+      "src": "/assets/hello-week/footer.jpg",
       "label": "通用栏目落款",
       "width": "100%"
     }
@@ -107,7 +119,7 @@
       "name": "箭头分隔",
       "title": "none",
       "body": "empty",
-      "frame": "<p style=\"margin:0;padding:8px 0;font:12px/16px Consolas,monospace;color:#777;white-space:nowrap;overflow-wrap:normal;\">{{divider}}</p>"
+      "frame": "<p style=\"margin:0;padding:8px 0;font:700 16px/24px Consolas,monospace;color:#000;white-space:nowrap;overflow-wrap:normal;\">{{divider}}</p>"
     },
     "callout": {
       "name": "投稿与说明框",
@@ -125,13 +137,13 @@
       "name": "资讯类别",
       "title": "required",
       "body": "empty",
-      "frame": "<section style=\"background:rgba(137,177,230,0.1);padding:28px 20px 8px;\"><table style=\"width:100%;border-collapse:collapse;\"><tbody><tr><td style=\"width:112px;vertical-align:middle;\"><strong style=\"display:inline-block;box-sizing:border-box;max-width:100%;padding:12px 18px;background:linear-gradient(125deg,#08ccdd,#0754ff 65%,#2076ee);border:2px solid #fff;border-radius:10px;box-shadow:0 0 3px #08a8e8;color:#fff;font-size:16px;line-height:24px;text-align:center;\">{{title}}</strong></td><td style=\"vertical-align:middle;padding-left:18px;\"><div style=\"border-top:1px solid #66adff;height:1px;\"></div></td></tr></tbody></table></section>"
+      "frame": "<section style=\"background:rgba(137,177,230,0.1);padding:28px 20px 8px;\"><table style=\"width:100%;border-collapse:collapse;\"><tbody><tr><td style=\"width:112px;vertical-align:middle;\"><strong style=\"display:inline-block;box-sizing:border-box;max-width:100%;padding:12px 18px;background:linear-gradient(125deg,#08ccdd,#0754ff 65%,#2076ee);border:2px solid #fff;border-radius:10px;box-shadow:0 0 3px #08a8e8;color:#fff;font-size:16px;font-weight:700;line-height:24px;text-align:center;\">{{title}}</strong></td><td style=\"vertical-align:middle;padding-left:18px;\"><div style=\"border-top:1px solid #66adff;height:1px;\"></div></td></tr></tbody></table></section>"
     },
     "news": {
       "name": "资讯条目",
       "title": "required",
       "body": "news",
-      "frame": "<section style=\"background:rgba(137,177,230,0.1);padding:4px 12px 18px;color:#0f1330;\"><h3 style=\"display:block;max-width:100%;box-sizing:border-box;margin:0 30px 10px 0;padding:3px 12px;background:#89b1e6;color:#fff;font-size:14px;line-height:28px;font-weight:600;\">{{title}}</h3><section style=\"padding:0 15px;\">{{body}}</section></section>"
+      "frame": "<section style=\"background:rgba(137,177,230,0.1);padding:4px 12px 18px;color:#0f1330;\"><p style=\"display:block;max-width:100%;box-sizing:border-box;margin:0 30px 10px 0;padding:3px 12px;background:#89b1e6;color:#fff;font-size:16px;line-height:28px;font-weight:700;\"><strong style=\"font-size:16px;font-weight:700;color:#fff;\">{{title}}</strong></p><section style=\"padding:0 15px;\">{{body}}</section></section>"
     },
     "transition": {
       "name": "代码过渡",
@@ -143,13 +155,13 @@
       "name": "重要提示条目",
       "title": "required",
       "body": "markdown",
-      "frame": "<section style=\"background:rgba(137,177,230,0.1);padding:18px 12px;color:#0f1330;\"><h3 style=\"display:inline-block;max-width:100%;box-sizing:border-box;margin:0 0 10px;padding:3px 12px;background:#89b1e6;color:#fff;font-size:14px;line-height:28px;\">{{title}}</h3><section style=\"padding:0 15px;\">{{body}}</section></section>"
+      "frame": "<section style=\"background:rgba(137,177,230,0.1);padding:18px 12px;color:#0f1330;\"><p style=\"display:inline-block;max-width:100%;box-sizing:border-box;margin:0 0 10px;padding:3px 12px;background:#89b1e6;color:#fff;font-size:16px;line-height:28px;font-weight:700;\"><strong style=\"font-size:16px;font-weight:700;color:#fff;\">{{title}}</strong></p><section style=\"padding:0 15px;\">{{body}}</section></section>"
     },
     "contact": {
-      "name": "联系信息",
+      "name": "联系信息（模板固定）",
       "title": "optional",
-      "body": "markdown",
-      "frame": "<section style=\"padding:27px;border:1px solid #89b1e6;background:rgba(137,177,230,0.1);color:#0f1330;font-size:12.25px;line-height:24.5px;\">{{commentHeading}}{{body}}</section>"
+      "body": "template",
+      "frame": "<section style=\"margin:20px 0;padding:27px;border:1px solid #89b1e6;background:rgba(137,177,230,0.1);color:#0f1330;font-size:14px;line-height:28px;\"><p style=\"margin:0 0 28px;\"><strong style=\"font-weight:700;\">// 【联系我们】</strong></p><p style=\"margin:0 0 28px;\">如果您有<strong style=\"font-weight:700;\">对于学生会组织建设和活动开展的意见和建议</strong>，或是有<strong style=\"font-weight:700;\">需要学生会帮助解决的权益诉求</strong>，欢迎通过以下方式联系我们：</p><p style=\"margin:0 0 28px;\"><strong style=\"font-weight:700;\">学生会公共邮箱：</strong><br>{{email}}</p><p style=\"margin:0;\"><strong style=\"font-weight:700;\">学生会负责人：</strong><br>{{contactPerson}}</p></section>"
     },
     "code-outro": {
       "name": "代码结束",
@@ -170,10 +182,10 @@
       "frame": "<section style=\"padding:27px;background:linear-gradient(#dbfffe 10%,#ffe0e0 100%);color:#0f1330;text-align:center;\">{{heading}}{{body}}</section>"
     },
     "credits": {
-      "name": "组织与署名",
-      "title": "required",
-      "body": "lines",
-      "frame": "<section style=\"padding:22px 0 12px;text-align:right;font-size:14px;line-height:28px;\"><p style=\"margin:0 0 8px;\">{{title}}</p>{{body}}</section>"
+      "name": "组织与署名（模板固定）",
+      "title": "optional",
+      "body": "template",
+      "frame": "<section style=\"padding:0 0 12px;text-align:right;font-size:14px;line-height:28px;font-weight:700;\"><p style=\"margin:0 0 8px;\"><strong style=\"font-weight:700;\">{{organization}}</strong></p><p style=\"margin:0 0 6px;\"><strong style=\"font-weight:700;\">文案丨</strong></p><p style=\"margin:0 0 6px;\"><strong style=\"font-weight:700;\">排版丨</strong></p><p style=\"margin:0 0 6px;\"><strong style=\"font-weight:700;\">校对丨</strong></p></section>"
     },
     "footer": {
       "name": "栏目落款海报",
