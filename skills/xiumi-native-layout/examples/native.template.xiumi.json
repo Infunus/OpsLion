@@ -1,0 +1,104 @@
+{
+  "schema": "xiumi-bridge/v4",
+  "mode": "native-layout",
+  "title": "模板",
+  "nativeLayout": {
+    "schema": "opslion-native-layout-plan/v1",
+    "blueprint": {
+      "schema": "opslion-native-blueprint/v1",
+      "source": {
+        "paperId": "123456",
+        "url": "https://xiumi.us/..."
+      },
+      "modules": [
+        {
+          "_comp": {
+            "tplId": "paper-cp:layout/row1-r1c2",
+            "_$uuid": "comp-x",
+            "style": {
+              "display": "flex"
+            }
+          },
+          "col1": {
+            "type": "group",
+            "style": {
+              "width": "auto",
+              "flex": "0 0 auto",
+              "height": "40px"
+            },
+            "constraint": {
+              "childLayout": "static"
+            },
+            "items": [
+              {
+                "_comp": {
+                  "tplId": "paper-cp:header/1-txt-normal",
+                  "_$uuid": "comp-y"
+                },
+                "txt1": {
+                  "type": "text",
+                  "text": "<p><strong>栏目</strong></p>",
+                  "style": {}
+                }
+              }
+            ]
+          }
+        },
+        {
+          "_comp": {
+            "tplId": "paper-cp:image/img-autowidth"
+          },
+          "img1": {
+            "type": "image",
+            "src": "https://img.example.org/old.png",
+            "style": {
+              "width": "100%"
+            }
+          }
+        }
+      ],
+      "pageStyle": {
+        "fontSize": "14px"
+      },
+      "slots": [
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0,
+          "original": "栏目"
+        },
+        {
+          "id": "i:[1,\"img1\",\"src\"]",
+          "kind": "image",
+          "module": 1,
+          "path": [
+            1,
+            "img1"
+          ],
+          "field": "src",
+          "original": "https://img.example.org/old.png"
+        }
+      ]
+    },
+    "sequence": [
+      {
+        "id": "header",
+        "source": 0,
+        "edits": {}
+      },
+      {
+        "id": "photo",
+        "source": 1,
+        "edits": {}
+      }
+    ]
+  }
+}

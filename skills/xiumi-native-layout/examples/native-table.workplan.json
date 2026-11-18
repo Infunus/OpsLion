@@ -1,0 +1,21 @@
+{
+  "schema": "opslion-native-workplan/v1",
+  "title": "原生表格示例（仅用于本地测试）",
+  "sequence": [
+    {
+      "id": "match-events-table",
+      "source": 0,
+      "nativeTables": [
+        {
+          "path": ["col1", "items", 0],
+          "columnWidths": [22, 78],
+          "rows": [
+            ["12′", {"runs": [{"text": "GOAL · ", "bold": true}, {"text": "林子川进球"}]}],
+            ["29′", "城环扳平"],
+            [{"text": "半场结束 · 2:1", "colSpan": 2}]
+          ]
+        }
+      ]
+    }
+  ]
+}

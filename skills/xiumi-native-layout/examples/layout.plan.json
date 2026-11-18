@@ -1,0 +1,40 @@
+{
+  "schema": "opslion-native-workplan/v1",
+  "title": "合成排版测试稿",
+  "sequence": [
+    {
+      "id": "long-label",
+      "source": 0,
+      "edits": {
+        "t:[0,\"col1\",\"items\",0,\"txt1\"]:0": "栏目标题与补充说明"
+      },
+      "stylePatches": [
+        {
+          "path": [
+            "col1",
+            "style",
+            "flex"
+          ],
+          "expected": "0 0 auto",
+          "value": "0 1 auto"
+        },
+        {
+          "path": [
+            "col1",
+            "style",
+            "height"
+          ],
+          "expected": "40px",
+          "value": "auto"
+        }
+      ]
+    },
+    {
+      "id": "short-label",
+      "source": 0,
+      "edits": {
+        "t:[0,\"col1\",\"items\",0,\"txt1\"]:0": "另一栏目"
+      }
+    }
+  ]
+}

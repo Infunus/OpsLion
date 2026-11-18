@@ -1,0 +1,49 @@
+{
+  "title": "Hello Week丨百讲预留与重要提示（结构示例，待替换）",
+  "links_enabled": true,
+  "submission": {
+    "enabled": true
+  },
+  "review": [],
+  "upcoming": [
+    {
+      "name": "活动信息",
+      "items": [
+        {
+          "title": "【待替换】本周活动",
+          "fields": [
+            {
+              "label": "时间",
+              "value": "【以本期资料为准】"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notices": [
+    {
+      "title": "【待替换】本期重要提醒",
+      "fields": [
+        {
+          "label": "办理时间",
+          "value": "【以本期资料为准】"
+        },
+        {
+          "label": "注意事项",
+          "value": "【准确填写】"
+        }
+      ]
+    }
+  ],
+  "contact": {
+    "enabled": true,
+    "email": "weekly@example.com"
+  },
+  "credits": {
+    "organization": "北京大学信息科学技术学院学生会",
+    "copy": "",
+    "layout": "",
+    "proofread": ""
+  }
+}

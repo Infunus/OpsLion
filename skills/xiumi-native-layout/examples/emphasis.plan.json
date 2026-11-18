@@ -1,0 +1,50 @@
+{
+  "schema": "opslion-native-workplan/v1",
+  "title": "示例：原标题及局部加粗",
+  "sequence": [
+    {
+      "id": "score",
+      "source": 0,
+      "richText": [
+        {
+          "path": [
+            "txt1"
+          ],
+          "runs": [
+            {
+              "text": "林子川",
+              "bold": true
+            },
+            {
+              "text": "打入三球，信科 "
+            },
+            {
+              "text": "4:3",
+              "bold": true
+            },
+            {
+              "text": " 取胜"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-title",
+      "source": 1,
+      "richText": [
+        {
+          "path": [
+            "txt1"
+          ],
+          "runs": [
+            {
+              "text": "赛事回顾",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

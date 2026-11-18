@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "运营狮",
+  "version": "0.9.0",
+  "description": "在同一插件中抓取与导入秀米原生排版、采集公众号正文与配图，并修复原文链接。",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "unlimitedStorage",
+    "cookies"
+  ],
+  "host_permissions": [
+    "https://xiumi.us/*",
+    "https://weread.qq.com/*",
+    "https://open.weixin.qq.com/*",
+    "https://mp.weixin.qq.com/*",
+    "https://*.qpic.cn/*",
+    "https://*.qlogo.cn/*",
+    "https://statics.xiumi.us/*",
+    "https://img.xiumi.us/*"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
+    "default_title": "运营狮 · 秀米排版与公众号采集",
+    "default_popup": "popup.html"
+  },
+  "version_name": "0.9.0 · 秀米排版与公众号采集",
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "minimum_chrome_version": "116"
+}

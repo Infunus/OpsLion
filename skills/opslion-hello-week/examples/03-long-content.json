@@ -1,0 +1,71 @@
+{
+  "title": "Hello Week丨复杂信息（结构示例，待替换）",
+  "links_enabled": true,
+  "submission": {
+    "enabled": true
+  },
+  "review": [
+    {
+      "name": "学术信息",
+      "items": [
+        {
+          "title": "【待替换】示例：标题较长并包含多个子主题的学术交流活动",
+          "fields": [
+            {
+              "label": "第一场",
+              "value": "【第一场的时间、地点与主题】"
+            },
+            {
+              "label": "第二场",
+              "value": "【第二场的时间、地点与主题】"
+            },
+            {
+              "label": "报名条件",
+              "value": "【完整保留限制和要求】"
+            }
+          ],
+          "body": "【较长正文也应按来源保留必要条件和注意事项，不应为了塞进固定框而省略重要信息。】"
+        }
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "name": "活动信息",
+      "items": [
+        {
+          "title": "【待替换】多阶段活动报名与材料提交说明",
+          "fields": [
+            {
+              "label": "开放报名",
+              "value": "【具体时间】"
+            },
+            {
+              "label": "报名截止",
+              "value": "【具体时间】"
+            },
+            {
+              "label": "提交材料",
+              "value": "【准确材料列表】"
+            },
+            {
+              "label": "重要提醒",
+              "value": "【留存需要注意的条件】"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notices": [],
+  "contact": {
+    "enabled": true,
+    "email": "weekly@example.com"
+  },
+  "credits": {
+    "organization": "北京大学信息科学技术学院学生会",
+    "copy": "",
+    "layout": "",
+    "proofread": ""
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "title": "Hello Week丨本期标题（待填写）",
+  "links_enabled": true,
+  "submission": {
+    "enabled": true
+  },
+  "review": [
+    {
+      "name": "学术信息",
+      "items": [
+        {
+          "title": "【待替换】本期回顾活动",
+          "fields": [
+            {
+              "label": "时间",
+              "value": "【以本期资料为准】"
+            },
+            {
+              "label": "地点",
+              "value": "【以本期资料为准】"
+            },
+            {
+              "label": "内容",
+              "value": "【填写来源支持的活动要点】"
+            }
+          ],
+          "link": {
+            "label": "原文标题（待替换）",
+            "url": ""
+          }
+        }
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "name": "活动信息",
+      "items": [
+        {
+          "title": "【待替换】本期预告活动",
+          "fields": [
+            {
+              "label": "时间",
+              "value": "【以本期资料为准】"
+            },
+            {
+              "label": "参与要求",
+              "value": "【有则填写，无则删除】"
+            }
+          ],
+          "link": {
+            "label": "原文标题（待替换）",
+            "url": ""
+          }
+        }
+      ]
+    }
+  ],
+  "notices": [],
+  "contact": {
+    "enabled": true,
+    "email": "weekly@example.com"
+  },
+  "credits": {
+    "organization": "北京大学信息科学技术学院学生会",
+    "copy": "",
+    "layout": "",
+    "proofread": ""
+  }
+}

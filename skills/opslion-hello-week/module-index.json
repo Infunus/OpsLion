@@ -1,0 +1,104 @@
+{
+  "schema": "hello-week/module-index/v1",
+  "template": "hello-week/native-v2",
+  "modules": [
+    {
+      "id": "banner",
+      "name": "栏目动图",
+      "control": "auto",
+      "position": "栏目最顶部",
+      "note": "原生 GIF，保留动图"
+    },
+    {
+      "id": "code_intro",
+      "name": "代码开场",
+      "control": "auto",
+      "position": "动图之后",
+      "note": "高亮文本，保留换行"
+    },
+    {
+      "id": "divider",
+      "name": "箭头分隔线",
+      "control": "auto",
+      "position": "区块交界处",
+      "note": "避免连续空分隔"
+    },
+    {
+      "id": "submission",
+      "name": "投稿说明与二维码",
+      "control": "submission.enabled",
+      "position": "前置固定区",
+      "note": "运营入口、奖励需核对"
+    },
+    {
+      "id": "section",
+      "name": "大区标题",
+      "control": "review/upcoming/notices nonempty",
+      "position": "每个非空大区起始",
+      "note": "空栏目省略"
+    },
+    {
+      "id": "news_panel",
+      "name": "分类与资讯组合",
+      "control": "review[]/upcoming[]",
+      "position": "章节标题后",
+      "note": "类别/标题/正文克隆"
+    },
+    {
+      "id": "transition_review",
+      "name": "回顾后续过渡",
+      "control": "both review and upcoming",
+      "position": "两区之间",
+      "note": "自动省略孤立过渡"
+    },
+    {
+      "id": "shows_panel",
+      "name": "百讲演出（手动填写）",
+      "control": "always",
+      "position": "下周及后续资讯之后，重要提示之前",
+      "note": "固定必备；保留原生蓝色方框和标题，框内只有一个空白原生文本组件；由用户在秀米中补充"
+    },
+    {
+      "id": "transition_notice",
+      "name": "重要提示过渡",
+      "control": "notices[] nonempty",
+      "position": "提示之前",
+      "note": "无提示则省略"
+    },
+    {
+      "id": "notice_panel",
+      "name": "提示集合",
+      "control": "notices[]",
+      "position": "提示分区内",
+      "note": "多条提示动态克隆"
+    },
+    {
+      "id": "contact",
+      "name": "联系区",
+      "control": "contact.enabled",
+      "position": "正文末",
+      "note": "联系方式须确认"
+    },
+    {
+      "id": "code_outro",
+      "name": "代码结尾",
+      "control": "auto",
+      "position": "联系后/动态内容后",
+      "note": "原生高亮和换行"
+    },
+    {
+      "id": "credits",
+      "name": "文案排版校对",
+      "control": "credits",
+      "position": "文末",
+      "note": "空姓名留空"
+    },
+    {
+      "id": "footer",
+      "name": "学院底图",
+      "control": "auto",
+      "position": "最后",
+      "note": "原生图片比例"
+    }
+  ]
+}

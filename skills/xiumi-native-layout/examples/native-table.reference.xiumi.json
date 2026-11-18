@@ -1,0 +1,1043 @@
+{
+  "schema": "xiumi-bridge/v4",
+  "mode": "native-layout",
+  "title": "原生表格参考示例",
+  "nativeLayout": {
+    "schema": "opslion-native-layout-plan/v1",
+    "blueprint": {
+      "adapter": "xiumi-v5-model/0.6.0",
+      "capturedAt": "2026-11-18T10:20:35.973Z",
+      "modules": [
+        {
+          "_comp": {
+            "$$tnEditingAttr": {
+              "hidden": false,
+              "locked": false,
+              "selected": false
+            },
+            "$$tnPresentAttr": {},
+            "_$uuid": "comp-GjepyvqfLGfGjE5F",
+            "constraint": {
+              "opMenu": {
+                "group-cell-merged": true
+              },
+              "pose": {
+                "resize": "h"
+              }
+            },
+            "pose": {
+              "height": null,
+              "position": "static",
+              "width": null
+            },
+            "style": {
+              "display": "flex",
+              "flexDirection": "row",
+              "flexWrap": "nowrap",
+              "justifyContent": "flex-start",
+              "marginBottom": "10px",
+              "marginLeft": "0",
+              "marginRight": "0",
+              "marginTop": "0",
+              "textAlign": "left"
+            },
+            "tplId": "paper-cp:layout/row1-r1c1"
+          },
+          "col1": {
+            "constraint": {
+              "childLayout": "static"
+            },
+            "items": [
+              {
+                "_comp": {
+                  "$$tnEditingAttr": {
+                    "hidden": false,
+                    "locked": false,
+                    "selected": false
+                  },
+                  "$$tnPresentAttr": {},
+                  "_$uuid": "comp-aLUClpCvRQAIF2tT",
+                  "constraint": {
+                    "pose": {
+                      "resize": "hv"
+                    }
+                  },
+                  "pose": {
+                    "height": "auto",
+                    "position": "static",
+                    "width": null
+                  },
+                  "style": {
+                    "marginBottom": "0",
+                    "marginLeft": "0",
+                    "marginRight": "0",
+                    "marginTop": "0",
+                    "min-height": "40px"
+                  },
+                  "tplId": "paper-cp:layout/classic-table-normal"
+                },
+                "classicTable1": {
+                  "items": [
+                    {
+                      "_comp": {
+                        "$$tnEditingAttr": {
+                          "hidden": false,
+                          "locked": false,
+                          "selected": false
+                        },
+                        "$$tnPresentAttr": {},
+                        "_$uuid": "comp-xGXiSodqDmm5pldp",
+                        "constraint": {
+                          "themeColors": {}
+                        },
+                        "style": {}
+                      },
+                      "tds": [
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-RcFzJjQY5orJVGzM",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  },
+                                  "themeColors": {}
+                                },
+                                "pose": {
+                                  "height": null,
+                                  "position": "static",
+                                  "width": null
+                                },
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "color": "rgb(100,100,100)",
+                                  "textAlign": "center"
+                                },
+                                "text": "<p>场次1</p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(255,255,255)",
+                            "borderBottomColor": "",
+                            "borderBottomStyle": "solid",
+                            "borderBottomWidth": "0",
+                            "borderLeftColor": "",
+                            "borderLeftStyle": "solid",
+                            "borderLeftWidth": "0",
+                            "borderRightColor": "rgb(227,227,227)",
+                            "borderRightStyle": "solid",
+                            "borderRightWidth": "1px",
+                            "borderTopColor": "",
+                            "borderTopStyle": "solid",
+                            "borderTopWidth": "0"
+                          },
+                          "type": "group"
+                        },
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-FujA21EZm6wSPHzs",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  }
+                                },
+                                "pose": {
+                                  "height": null,
+                                  "position": "static",
+                                  "width": null
+                                },
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "textAlign": "center"
+                                },
+                                "text": "<p><strong>米米 VS 秀秀</strong></p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(255,255,255)"
+                          },
+                          "type": "group"
+                        }
+                      ]
+                    },
+                    {
+                      "_comp": {
+                        "$$tnEditingAttr": {
+                          "hidden": false,
+                          "locked": false,
+                          "selected": false
+                        },
+                        "$$tnPresentAttr": {},
+                        "_$uuid": "comp-90xDgjWHe8cEy60U",
+                        "constraint": {
+                          "themeColors": {}
+                        },
+                        "style": {}
+                      },
+                      "tds": [
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-HyA8Kq90qQVHadDX",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  },
+                                  "themeColors": {}
+                                },
+                                "pose": {},
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "color": "rgb(100,100,100)",
+                                  "textAlign": "center"
+                                },
+                                "text": "<p>场次2</p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(241,241,241)",
+                            "borderBottomColor": "",
+                            "borderBottomStyle": "solid",
+                            "borderBottomWidth": "0",
+                            "borderLeftColor": "",
+                            "borderLeftStyle": "solid",
+                            "borderLeftWidth": "0",
+                            "borderRightColor": "rgb(227, 227, 227)",
+                            "borderRightStyle": "solid",
+                            "borderRightWidth": "1px",
+                            "borderTopColor": "",
+                            "borderTopStyle": "solid",
+                            "borderTopWidth": "0",
+                            "paddingBottom": "0",
+                            "paddingLeft": "18px",
+                            "paddingRight": "18px",
+                            "paddingTop": "0"
+                          },
+                          "type": "group"
+                        },
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-ypvFHICtnhzlmrkh",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  }
+                                },
+                                "pose": {},
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "textAlign": "center"
+                                },
+                                "text": "<p><strong>秀秀 VS 米米</strong></p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(241,241,241)",
+                            "paddingBottom": "0",
+                            "paddingLeft": "18px",
+                            "paddingRight": "18px",
+                            "paddingTop": "0"
+                          },
+                          "type": "group"
+                        }
+                      ]
+                    },
+                    {
+                      "_comp": {
+                        "$$tnEditingAttr": {
+                          "hidden": false,
+                          "locked": false,
+                          "selected": false
+                        },
+                        "$$tnPresentAttr": {},
+                        "_$uuid": "comp-HULjCNmgfh5iK9PQ",
+                        "constraint": {
+                          "themeColors": {}
+                        },
+                        "style": {}
+                      },
+                      "tds": [
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-zIZTZhznC5ZyB1pc",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  },
+                                  "themeColors": {}
+                                },
+                                "pose": {
+                                  "height": null,
+                                  "position": "static",
+                                  "width": null
+                                },
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "color": "rgb(100,100,100)",
+                                  "textAlign": "center"
+                                },
+                                "text": "<p>场次3</p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(255,255,255)",
+                            "borderBottomColor": "",
+                            "borderBottomStyle": "solid",
+                            "borderBottomWidth": "0",
+                            "borderLeftColor": "",
+                            "borderLeftStyle": "solid",
+                            "borderLeftWidth": "0",
+                            "borderRightColor": "rgb(227,227,227)",
+                            "borderRightStyle": "solid",
+                            "borderRightWidth": "1px",
+                            "borderTopColor": "",
+                            "borderTopStyle": "solid",
+                            "borderTopWidth": "0"
+                          },
+                          "type": "group"
+                        },
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-LnKZJ1fhWOeDCoKm",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  }
+                                },
+                                "pose": {
+                                  "height": null,
+                                  "position": "static",
+                                  "width": null
+                                },
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "textAlign": "center"
+                                },
+                                "text": "<p><strong>米米 VS 秀秀</strong></p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(255,255,255)"
+                          },
+                          "type": "group"
+                        }
+                      ]
+                    },
+                    {
+                      "_comp": {
+                        "$$tnEditingAttr": {
+                          "hidden": false,
+                          "locked": false,
+                          "selected": false
+                        },
+                        "$$tnPresentAttr": {},
+                        "_$uuid": "comp-Wo5W2gtyWr9HOkYB",
+                        "constraint": {
+                          "themeColors": {}
+                        },
+                        "style": {}
+                      },
+                      "tds": [
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-mObvK6zxAUVQemDh",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  },
+                                  "themeColors": {}
+                                },
+                                "pose": {},
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "color": "rgb(100,100,100)",
+                                  "textAlign": "center"
+                                },
+                                "text": "<p>场次3</p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(241,241,241)",
+                            "borderBottomColor": "",
+                            "borderBottomStyle": "solid",
+                            "borderBottomWidth": "0",
+                            "borderLeftColor": "",
+                            "borderLeftStyle": "solid",
+                            "borderLeftWidth": "0",
+                            "borderRightColor": "rgb(227, 227, 227)",
+                            "borderRightStyle": "solid",
+                            "borderRightWidth": "1px",
+                            "borderTopColor": "",
+                            "borderTopStyle": "solid",
+                            "borderTopWidth": "0",
+                            "paddingBottom": "0",
+                            "paddingLeft": "18px",
+                            "paddingRight": "18px",
+                            "paddingTop": "0"
+                          },
+                          "type": "group"
+                        },
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-TYmxE73LUqH2cbPg",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  }
+                                },
+                                "pose": {},
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "textAlign": "center"
+                                },
+                                "text": "<p><strong>米米 VS 秀秀</strong></p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(241,241,241)",
+                            "paddingBottom": "0",
+                            "paddingLeft": "18px",
+                            "paddingRight": "18px",
+                            "paddingTop": "0"
+                          },
+                          "type": "group"
+                        }
+                      ]
+                    },
+                    {
+                      "_comp": {
+                        "$$tnEditingAttr": {
+                          "hidden": false,
+                          "locked": false,
+                          "selected": false
+                        },
+                        "$$tnPresentAttr": {},
+                        "_$uuid": "comp-jmd9XcR8EX5NlzXf",
+                        "constraint": {
+                          "themeColors": {}
+                        },
+                        "style": {}
+                      },
+                      "tds": [
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-SZngXp4VSiPbUlaY",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  },
+                                  "themeColors": {}
+                                },
+                                "pose": {
+                                  "height": null,
+                                  "position": "static",
+                                  "width": null
+                                },
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "color": "rgb(100,100,100)",
+                                  "textAlign": "center"
+                                },
+                                "text": "<p>场次3</p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(255,255,255)",
+                            "borderBottomColor": "",
+                            "borderBottomStyle": "solid",
+                            "borderBottomWidth": "0",
+                            "borderLeftColor": "",
+                            "borderLeftStyle": "solid",
+                            "borderLeftWidth": "0",
+                            "borderRightColor": "rgb(227,227,227)",
+                            "borderRightStyle": "solid",
+                            "borderRightWidth": "1px",
+                            "borderTopColor": "",
+                            "borderTopStyle": "solid",
+                            "borderTopWidth": "0"
+                          },
+                          "type": "group"
+                        },
+                        {
+                          "colSpan": 1,
+                          "constraint": {
+                            "childLayout": "static"
+                          },
+                          "items": [
+                            {
+                              "_comp": {
+                                "$$tnEditingAttr": {
+                                  "hidden": false,
+                                  "locked": false,
+                                  "selected": false
+                                },
+                                "$$tnPresentAttr": {},
+                                "_$uuid": "comp-Du2BmtErRmiHhpvY",
+                                "constraint": {
+                                  "opMenu": {
+                                    "text-merged": true
+                                  },
+                                  "pose": {
+                                    "resize": "h"
+                                  }
+                                },
+                                "pose": {
+                                  "height": null,
+                                  "position": "static",
+                                  "width": null
+                                },
+                                "style": {
+                                  "justifyContent": "center",
+                                  "marginBottom": "10px",
+                                  "marginLeft": "0",
+                                  "marginRight": "0",
+                                  "marginTop": "10px",
+                                  "textAlign": "center"
+                                },
+                                "tplId": "paper-cp:header/1-txt-normal"
+                              },
+                              "txt1": {
+                                "constraint": {},
+                                "style": {
+                                  "textAlign": "center"
+                                },
+                                "text": "<p><strong>米米 VS 秀秀</strong></p>",
+                                "type": "text"
+                              }
+                            }
+                          ],
+                          "rowSpan": 1,
+                          "style": {
+                            "backgroundColor": "rgb(255,255,255)"
+                          },
+                          "type": "group"
+                        }
+                      ]
+                    }
+                  ],
+                  "style": {
+                    "margin": "0px auto",
+                    "width": "100%"
+                  },
+                  "thead": [
+                    {
+                      "style": {
+                        "width": "38.00%"
+                      }
+                    },
+                    {
+                      "style": {
+                        "width": "62.00%"
+                      }
+                    }
+                  ],
+                  "type": "classic-table"
+                }
+              }
+            ],
+            "style": {
+              "alignSelf": "stretch",
+              "flex": "100 100 0%",
+              "height": "auto",
+              "maxWidth": null,
+              "minWidth": null,
+              "paddingBottom": "0",
+              "paddingLeft": "5px",
+              "paddingRight": "0",
+              "paddingTop": "0",
+              "verticalAlign": "top",
+              "width": "auto"
+            },
+            "type": "group"
+          }
+        }
+      ],
+      "pageStyle": {
+        "backgroundColor": "tn-default-color"
+      },
+      "schema": "opslion-native-blueprint/v1",
+      "slots": [
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",0,\"tds\",0,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "场次1",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            0,
+            "tds",
+            0,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",0,\"tds\",1,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "米米 VS 秀秀",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            0,
+            "tds",
+            1,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",1,\"tds\",0,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "场次2",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            1,
+            "tds",
+            0,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",1,\"tds\",1,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "秀秀 VS 米米",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            1,
+            "tds",
+            1,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",2,\"tds\",0,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "场次3",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            2,
+            "tds",
+            0,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",2,\"tds\",1,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "米米 VS 秀秀",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            2,
+            "tds",
+            1,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",3,\"tds\",0,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "场次3",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            3,
+            "tds",
+            0,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",3,\"tds\",1,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "米米 VS 秀秀",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            3,
+            "tds",
+            1,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",4,\"tds\",0,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "场次3",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            4,
+            "tds",
+            0,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        },
+        {
+          "id": "t:[0,\"col1\",\"items\",0,\"classicTable1\",\"items\",4,\"tds\",1,\"items\",0,\"txt1\"]:0",
+          "kind": "text",
+          "module": 0,
+          "original": "米米 VS 秀秀",
+          "path": [
+            0,
+            "col1",
+            "items",
+            0,
+            "classicTable1",
+            "items",
+            4,
+            "tds",
+            1,
+            "items",
+            0,
+            "txt1"
+          ],
+          "run": 0
+        }
+      ],
+      "source": {
+        "paperId": "123456",
+        "url": "https://xiumi.us/studio/v5#/paper/for/123456/cube/0"
+      }
+    },
+    "sequence": [
+      {
+        "id": "table-example",
+        "source": 0,
+        "edits": {}
+      }
+    ]
+  }
+}
