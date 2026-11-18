@@ -1,7 +1,8 @@
-# Windows cmd.exe launchers require CRLF, including when cloned with core.autocrlf=false.
-*.bat text eol=crlf
-*.ps1 text eol=crlf
-# Keep extension sources byte-identical to the downloadable archive after cloning.
-integrations/xiumi-bridge/*.js text eol=lf
-integrations/xiumi-bridge/*.html text eol=lf
-integrations/xiumi-bridge/*.json text eol=lf
+# Distributable plugin and Skill bytes stay stable when cloned on Windows.
+plugin/** -text whitespace=cr-at-eol
+skills/** -text whitespace=cr-at-eol
+*.zip binary
+README.md text eol=lf
+LICENSE text eol=crlf
+.gitignore text eol=lf
+.gitattributes text eol=lf

@@ -1,0 +1,12 @@
+{
+  "changes": [
+    {
+      "location": "示例：比赛回顾第2段",
+      "kind": "punctuation",
+      "before": "示例原句。",
+      "after": "示例修改句！",
+      "reason": "示例：调整标点以符合文章语气",
+      "reviewed": true
+    }
+  ]
+}

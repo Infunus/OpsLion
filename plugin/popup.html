@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>运营狮</title>
+  <style>
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      width: 360px;
+      padding: 16px;
+      background: #f7f8f6;
+      color: #27332c;
+      font-family: system-ui, "Microsoft YaHei", sans-serif
+    }
+
+    header {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      margin-bottom: 12px
+    }
+
+    header img {
+      width: 30px;
+      height: 30px
+    }
+
+    header strong {
+      font-size: 14px
+    }
+
+    header small {
+      display: block;
+      font-size: 10px;
+      color: #768078
+    }
+
+    section {
+      padding: 13px;
+      border: 1px solid #dce5dd;
+      border-radius: 10px;
+      background: white;
+      margin: 10px 0
+    }
+
+    h2 {
+      font-size: 13px;
+      margin: 0 0 7px
+    }
+
+    p {
+      font-size: 11px;
+      line-height: 1.55;
+      color: #687269;
+      margin: 0 0 9px
+    }
+
+    button,
+    .picker {
+      display: block;
+      width: 100%;
+      padding: 11px 9px;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center
+    }
+
+    button {
+      border: 0;
+      background: #345540;
+      color: white;
+      font-weight: 600
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: default
+    }
+
+    .picker {
+      margin-bottom: 9px;
+      border: 1px dashed #a7beb0;
+      color: #345540;
+      background: #f9fbf9
+    }
+
+    .picker input {
+      display: none
+    }
+
+    button.light {
+      background: transparent;
+      color: #6b796f;
+      font-size: 10px;
+      padding: 6px;
+      font-weight: 400;
+      text-align: right
+    }
+
+    .status {
+      margin: 8px 0 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere
+    }
+
+    .ok {
+      color: #276b4b
+    }
+
+    .error {
+      color: #b03b35
+    }
+
+    footer {
+      color: #808a83;
+      font-size: 10px;
+      line-height: 1.6
+    }
+  </style>
+</head>
+
+<body>
+  <header><img src="icon32.png" alt="">
+    <div><strong>运营狮</strong><small>秀米排版 · 公众号采集</small></div>
+  </header>
+  <section>
+    <h2>① 抓取排版</h2>
+    <p>在秀米打开源稿件，下载完整原生排版</p>
+    <button id="capture">抓取并下载 .xiumi.json</button>
+    <p class="status" id="captureStatus"></p>
+  </section>
+  <section>
+    <h2>② 导入排版</h2>
+    <p>在秀米打开一份空白图文，选择导入包</p>
+    <label class="picker">选择 .xiumi.json 文件<input type="file" id="file"
+        accept=".json,.xiumi.json,application/json"></label>
+    <button id="import">导入</button>
+    <p class="status" id="status">尚未选择文件</p>
+    <button id="clearCache" class="light" type="button">清除上次导入包缓存</button>
+  </section>
+  <section><h2>③ 公众号采集</h2><p>扫码登录，按日期或全部历史采集正文和配图，下载资料交给 Skill 排版。</p><button id="collector">打开公众号采集台</button></section>
+  <script type="module" src="popup.js"></script>
+</body>
+
+</html>

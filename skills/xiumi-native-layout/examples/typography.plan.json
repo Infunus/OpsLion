@@ -1,0 +1,32 @@
+{
+  "schema": "opslion-native-workplan/v1",
+  "title": "合成文字格式示例",
+  "sequence": [
+    {
+      "id": "long-western-text",
+      "source": 0,
+      "edits": {
+        "t:[0,\"col1\",\"items\",0,\"txt1\"]:0": "包含超长英文标识符 ExampleIdentifierWithoutNaturalBreakingPoints0123456789 的一段正文"
+      },
+      "textFormatting": [
+        {
+          "path": [
+            "col1",
+            "items",
+            0,
+            "txt1"
+          ],
+          "firstLineIndent": "2em",
+          "westernBreak": true
+        }
+      ]
+    },
+    {
+      "id": "unchanged",
+      "source": 0,
+      "edits": {
+        "t:[0,\"col1\",\"items\",0,\"txt1\"]:0": "独立的另一条标题"
+      }
+    }
+  ]
+}

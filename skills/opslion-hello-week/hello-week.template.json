@@ -1,0 +1,2179 @@
+{
+  "schema": "hello-week/native-v2",
+  "version": "2.2.0",
+  "engine": "支持 xiumi-bridge/v4 原生协议的 OpsLion 插件 / xiumi-bridge/v4",
+  "source": {
+    "paperId": "123456",
+    "url": "https://xiumi.us/studio/v5#/paper/for/123456/cube/0"
+  },
+  "capturedAt": "2026-11-17T13:02:19.666Z",
+  "pageStyle": {
+    "backgroundColor": "tn-default-color",
+    "fontSize": "87.50%",
+    "letterSpacing": "1px",
+    "lineHeight": "2"
+  },
+  "family": "Hello Week",
+  "seeds": {
+    "banner": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-dw06NlKxDbnMxJph",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "261638034:1789092297:13728181:13728181:3729560:7",
+          "_FRONTVIEW": "192862299:1705028111:70772348:70772348:2044064973:10"
+        },
+        "constraint": {
+          "opMenu": {
+            "crop-image-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "lineHeight": "0",
+          "marginBottom": "10px",
+          "marginTop": "10px",
+          "textAlign": "center"
+        },
+        "tplId": "paper-cp:image/img-autowidth"
+      },
+      "img1": {
+        "src": "//img.xiumi.us/xmi/ua/VJQg/i/0a8b477d6b9c1f4c6c4c42e95586b2c8-sz_2398533.gif",
+        "style": {},
+        "type": "image"
+      }
+    },
+    "code_intro": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-NFlRs6eXYVGXeZMU",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "178211944:1787343911:97940047:97940047:88073058:13",
+          "_FRONTVIEW": "215990712:1705028111:60227487:60227487:2121592110:17"
+        },
+        "constraint": {
+          "opMenu": {
+            "text-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {},
+        "tplId": "paper-cp:header/1-txt-normal"
+      },
+      "txt1": {
+        "constraint": {
+          "editingCellType": "text-code"
+        },
+        "style": {
+          "textAlign": "justify"
+        },
+        "text": "<pre class=\"code-snippet\" data-lang=\"c\"><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__meta\">#<span class=\"code-snippet__meta-keyword\">include</span> <span class=\"code-snippet__meta-string\">&lt;this week&gt;</span></span></span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__meta\">#<span class=\"code-snippet__meta-keyword\">include</span> <span class=\"code-snippet__meta-string\">&lt;next week&gt;</span></span></span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__keyword\">using</span> <span class=\"code-snippet__keyword\">namespace</span> EECS;</span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__class\"><span class=\"code-snippet__keyword\">class</span> <span class=\"code-snippet__title\">Contribution</span>;</span> <span class=\"code-snippet__comment\">// 投稿类</span></span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__class\"><span class=\"code-snippet__keyword\">class</span> <span class=\"code-snippet__title\">Academic</span>;</span> <span class=\"code-snippet__comment\">// 学术类</span></span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__class\"><span class=\"code-snippet__keyword\">class</span> <span class=\"code-snippet__title\">Activities</span>;</span> <span class=\"code-snippet__comment\">// 活动类</span></span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__class\"><span class=\"code-snippet__keyword\">class</span> <span class=\"code-snippet__title\">Notification</span>;</span> <span class=\"code-snippet__comment\">// 其他信息</span></span></code><code><span class=\"code-snippet_outer\"></span></code><code><span class=\"code-snippet_outer\"><span class=\"code-snippet__function\"><span class=\"code-snippet__keyword\">int</span> <span class=\"code-snippet__title\">main</span><span class=\"code-snippet__params\">()</span></span></span></code><code><span class=\"code-snippet_outer\">{</span></code><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;欢迎来到Hello Week!\\n&quot;</span>);</span></code><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;跟着攻城狮一起\\n&quot;</span>);</span></code><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;来看看下周的重要信息吧\\n&quot;</span>);</span></code></pre>",
+        "type": "text"
+      }
+    },
+    "divider": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-sikADAtNEmPGWsqy",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "261638034:1789092297:13728181:13728181:3729560:7",
+          "_FRONTVIEW": "231267378:1705028111:42066453:42066453:2137256100:11"
+        },
+        "constraint": {
+          "opMenu": {
+            "text-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "marginBottom": "20px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "20px"
+        },
+        "tplId": "paper-cp:header/1-txt-normal"
+      },
+      "txt1": {
+        "constraint": {},
+        "style": {
+          "fontSize": "114.2857%",
+          "paragraphMargin": 0,
+          "textAlign": "justify"
+        },
+        "text": "<p><strong>＞＞＞--------------------------------</strong></p>",
+        "type": "text"
+      }
+    },
+    "submission": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-fzj2ty8Cjdw42Yib",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+          "_FRONTVIEW": "b3:197146920258851:6698424761:356908149:2092823858:1310379471:33:1a1c553eb3cf3c0271efb1677cca860cb9da7574"
+        },
+        "constraint": {
+          "opMenu": {
+            "group-cell-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "justifyContent": "flex-start",
+          "marginBottom": "10px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "0",
+          "textAlign": "left"
+        },
+        "tplId": "paper-cp:layout/row1-r1c1"
+      },
+      "col1": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-oB2OuH64SswT8uk8",
+              "_viewport": {
+                "HEIGHT": 563,
+                "WIDTH": 375,
+                "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+                "_FRONTVIEW": "b3:202630218469627:8169770771:3102758561:4084237673:83967950:29:1a1c553eb3cf3c0271efb1677cca860cb9da7574"
+              },
+              "constraint": {
+                "opMenu": {
+                  "text-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "marginBottom": "-10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "-10px"
+              },
+              "tplId": "paper-cp:header/1-txt-normal"
+            },
+            "txt1": {
+              "constraint": {},
+              "style": {
+                "color": "rgb(15,19,48)",
+                "padding": "0px 0px 0px 0px",
+                "textAlign": "justify"
+              },
+              "text": "<p style><span style><strong>// </strong><strong style=\"font-size: 87.5%;\"><span style=\"font-size: 114.286%;\">【关于投稿】</span></strong></span></p><p>毫无疑问，投稿环节是<strong>【Hello Week】</strong>的重磅环节！我们欢迎所有信科的uu们一起积极参加投稿，让你的感受与心声，在这里得到抒发，让你的表现力与创造力，在这里得到施展！这个栏目将会接收各种各样的投稿内容，比如最平常的对日常生活的<strong>【感受】</strong>、对最近喜欢的书影音或是其他事物的<strong>【推荐】</strong>，又或是拍摄的美丽相片的<strong>【分享】</strong>……我们的目的，就是想打造一个<strong>【信科人的朋友圈】</strong>，让大家的灵感碰撞出火花，生活交织在一起。当然，我们的投稿没有限制署名方式，你可以自由选择实名或者用一个你喜欢的名字，亦或是匿名。这些都由你自己决定。总之，我们欢迎大家的来稿，也希望大家能不断为这个栏目提出建议，一起为<strong>【信科人的朋友圈】</strong>注入更多的活力！投稿问卷详情扫描下方二维码哦~~</p>",
+              "type": "text"
+            }
+          },
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-SWmhjEGYs8Hg1jVq",
+              "constraint": {
+                "opMenu": {
+                  "crop-image-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "lineHeight": "0",
+                "marginBottom": "20px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "20px",
+                "textAlign": "center"
+              },
+              "tplId": "paper-cp:image/img-autowidth"
+            },
+            "img1": {
+              "clipPosition": null,
+              "constraint": {},
+              "src": "//img.xiumi.us/xmi/ua/VJQg/i/01a65100664b7d65603c7d88078f7e1e-sz_35346.jpg?x-oss-process=style/xm",
+              "style": {
+                "flex": null,
+                "height": "auto",
+                "maxWidth": null,
+                "minWidth": null,
+                "width": "80%"
+              },
+              "type": "image"
+            }
+          },
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-3kkDDdaymLUtuorh",
+              "constraint": {},
+              "pose": {
+                "height": "auto",
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "flex-start",
+                "margin": "20px 0% 20px 0%",
+                "textAlign": "left"
+              },
+              "tplId": "paper-cp:layout/row1-r1c3"
+            },
+            "col1": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-qtqVv86OQ0HFsT83",
+                    "constraint": {
+                      "opMenu": {
+                        "crop-image-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "width": null
+                    },
+                    "style": {
+                      "lineHeight": "0",
+                      "margin": "0px 0% 0px 0%",
+                      "marginBottom": "10px",
+                      "marginTop": "10px",
+                      "textAlign": "center"
+                    },
+                    "tplId": "paper-cp:image/img-autowidth"
+                  },
+                  "img1": {
+                    "clipPosition": null,
+                    "constraint": {
+                      "forceAspectRatio": {
+                        "x": 1,
+                        "y": 1
+                      }
+                    },
+                    "src": "//img.xiumi.us/xmi/ua/VJQg/i/7c03f04d8b737e9ea474aafbdb3403fa-sz_10356.gif?x-oss-process=image/crop,h_240,w_240,x_0,y_0",
+                    "style": {
+                      "borderBottomColor": "rgb(62, 62, 62)",
+                      "borderBottomLeftRadius": "0px",
+                      "borderBottomRightRadius": "0px",
+                      "borderBottomStyle": "none",
+                      "borderBottomWidth": "0px",
+                      "borderLeftColor": "rgb(62, 62, 62)",
+                      "borderLeftStyle": "none",
+                      "borderLeftWidth": "0px",
+                      "borderRightColor": "rgb(62, 62, 62)",
+                      "borderRightStyle": "none",
+                      "borderRightWidth": "0px",
+                      "borderTopColor": "rgb(62, 62, 62)",
+                      "borderTopLeftRadius": "0px",
+                      "borderTopRightRadius": "0px",
+                      "borderTopStyle": "none",
+                      "borderTopWidth": "0px",
+                      "flex": null,
+                      "height": "auto",
+                      "maxWidth": null,
+                      "minWidth": null,
+                      "overflow": null,
+                      "width": "40px"
+                    },
+                    "type": "image"
+                  }
+                }
+              ],
+              "style": {
+                "flex": "0 0 auto",
+                "height": "auto",
+                "maxWidth": null,
+                "minWidth": null,
+                "width": "40px"
+              },
+              "type": "group"
+            },
+            "col2": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-X0LoVgN3epgY63W0",
+                    "anim": null,
+                    "constraint": {
+                      "opMenu": {
+                        "group-cell-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "linkFrame": false,
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "width": null
+                    },
+                    "style": {
+                      "backgroundImage": null,
+                      "margin": "9px 0% 0px 0%",
+                      "textAlign": "center"
+                    },
+                    "tplId": "paper-cp:layout/fixed"
+                  },
+                  "col1": {
+                    "anim": null,
+                    "constraint": {
+                      "childLayout": "static",
+                      "fixedSize": true,
+                      "frozen": true
+                    },
+                    "items": [],
+                    "link": null,
+                    "linkFrame": false,
+                    "style": {
+                      "baseViewHeight": "240px",
+                      "borderBottomColor": "rgba(255,255,255,0)",
+                      "borderBottomLeftRadius": "0px",
+                      "borderBottomRightRadius": "0px",
+                      "borderBottomStyle": "solid",
+                      "borderBottomWidth": "8px",
+                      "borderLeftColor": "rgba(255, 255, 255, 0)",
+                      "borderLeftStyle": "solid",
+                      "borderLeftWidth": "0px",
+                      "borderRightColor": "rgb(137,177,230)",
+                      "borderRightStyle": "solid",
+                      "borderRightWidth": "12px",
+                      "borderTopColor": "rgba(255, 255, 255, 0)",
+                      "borderTopLeftRadius": "0px",
+                      "borderTopRightRadius": "0px",
+                      "borderTopStyle": "solid",
+                      "borderTopWidth": "8px",
+                      "flex": null,
+                      "height": "0px",
+                      "maxWidth": null,
+                      "minWidth": null,
+                      "tnYzkFontUsageId": null,
+                      "width": "0px"
+                    },
+                    "type": "group"
+                  }
+                }
+              ],
+              "style": {
+                "borderBottomWidth": "0px",
+                "borderLeftWidth": "0px",
+                "borderRightWidth": "0px",
+                "borderTopWidth": "0px",
+                "flex": "0 0 0%",
+                "height": "auto",
+                "marginBottom": "0px",
+                "marginLeft": "10px",
+                "marginRight": "0px",
+                "marginTop": "0px",
+                "maxWidth": null,
+                "minWidth": null,
+                "width": "auto"
+              },
+              "type": "group"
+            },
+            "col3": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-cciU2PF8ejVHrNXr",
+                    "constraint": {
+                      "opMenu": {
+                        "text-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "width": null
+                    },
+                    "style": {
+                      "justifyContent": "center",
+                      "margin": "0px 0% 0px 0%",
+                      "textAlign": "center"
+                    },
+                    "tplId": "paper-cp:header/1-txt-normal"
+                  },
+                  "txt1": {
+                    "constraint": {},
+                    "style": {
+                      "color": "rgb(255,255,255)",
+                      "fontFamily": "",
+                      "fontSize": "100.0000%",
+                      "padding": "0px 0px 0px 0px",
+                      "paragraphMargin": 0,
+                      "textAlign": "justify",
+                      "textShadow": ""
+                    },
+                    "text": "<p>投稿详情请关注本期通知</p>",
+                    "type": "text"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "flex-start",
+                "backgroundColor": "rgb(137,177,230)",
+                "borderBottomLeftRadius": "10px",
+                "borderBottomRightRadius": "10px",
+                "borderTopLeftRadius": "10px",
+                "borderTopRightRadius": "10px",
+                "flex": "90 90 0%",
+                "height": "auto",
+                "marginBottom": "0",
+                "marginLeft": "0",
+                "marginRight": "15px",
+                "marginTop": "0",
+                "maxWidth": null,
+                "minWidth": null,
+                "overflow": "hidden",
+                "paddingBottom": "16px",
+                "paddingLeft": "10px",
+                "paddingRight": "10px",
+                "paddingTop": "16px",
+                "verticalAlign": "top",
+                "width": "auto"
+              },
+              "type": "group"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "flex-start",
+          "backgroundColor": "rgba(137, 177, 230, 0.1)",
+          "borderBottomColor": "rgb(137,177,230)",
+          "borderBottomLeftRadius": "0px",
+          "borderBottomRightRadius": "0px",
+          "borderBottomStyle": "solid",
+          "borderBottomWidth": "1px",
+          "borderLeftColor": "rgb(137,177,230)",
+          "borderLeftStyle": "solid",
+          "borderLeftWidth": "1px",
+          "borderRightColor": "rgb(137,177,230)",
+          "borderRightStyle": "solid",
+          "borderRightWidth": "1px",
+          "borderTopColor": "rgb(137,177,230)",
+          "borderTopLeftRadius": "0px",
+          "borderTopRightRadius": "0px",
+          "borderTopStyle": "solid",
+          "borderTopWidth": "1px",
+          "flex": "0 0 auto",
+          "padding": "27px 27px 27px 27px",
+          "verticalAlign": "top",
+          "width": "100.00%"
+        },
+        "type": "group"
+      }
+    },
+    "section": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-0u7vE6D2xqh2D5dr",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+          "_FRONTVIEW": "197540202:1705028111:76482381:76482381:2037192188:11"
+        },
+        "constraint": {
+          "opMenu": {
+            "group-cell-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "justifyContent": "flex-start",
+          "textAlign": "left"
+        },
+        "tplId": "paper-cp:layout/row1-r1c2"
+      },
+      "col1": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-FtPwF6V4r4grfh1o",
+              "constraint": {
+                "opMenu": {
+                  "crop-image-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "justifyContent": "flex-start",
+                "lineHeight": "0",
+                "marginBottom": "10px",
+                "marginTop": "10px",
+                "textAlign": "left"
+              },
+              "tplId": "paper-cp:image/img-autowidth"
+            },
+            "img1": {
+              "constraint": {},
+              "src": "//statics.xiumi.us/mat/i/fvId/fded536b7bb3edba83bf3b4c1c42d16b_sz-32433.png",
+              "style": {
+                "flex": null,
+                "height": "auto",
+                "maxWidth": null,
+                "minWidth": null,
+                "width": "48px"
+              },
+              "type": "image"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "center",
+          "flex": "0 0 auto",
+          "height": "auto",
+          "maxWidth": "100%",
+          "minWidth": "5%",
+          "verticalAlign": "middle",
+          "width": "auto"
+        },
+        "type": "group"
+      },
+      "col2": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-ZjgEewF9vjdmxYCY",
+              "constraint": {
+                "opMenu": {
+                  "text-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {},
+              "style": {},
+              "tplId": "paper-cp:header/1-txt-normal"
+            },
+            "txt1": {
+              "constraint": {},
+              "style": {
+                "fontSize": "128.5714%",
+                "textAlign": "justify"
+              },
+              "text": "<p><strong>上周回顾<br></strong></p>",
+              "type": "text"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "center",
+          "flex": "0 0 auto",
+          "height": "auto",
+          "marginBottom": "0",
+          "marginLeft": "10px",
+          "marginRight": "0",
+          "marginTop": "0",
+          "maxWidth": "100%",
+          "minWidth": "5%",
+          "verticalAlign": "middle",
+          "width": "auto"
+        },
+        "type": "group"
+      }
+    },
+    "news_panel": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-nwHyBTAzPbAxGqIx",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+          "_FRONTVIEW": "266247078:1705028111:9938305:9938305:2104866608:9"
+        },
+        "constraint": {
+          "opMenu": {
+            "group-cell-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "justifyContent": "flex-start",
+          "marginBottom": "10px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "10px",
+          "textAlign": "left"
+        },
+        "tplId": "paper-cp:layout/row1-r1c1"
+      },
+      "col1": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-wdqScOX0wIwBFqi7",
+              "_viewport": {
+                "WIDTH": 415,
+                "_BACKVIEW": "205149124:1740603481:57896419:57896419:60488910:7",
+                "_FRONTVIEW": "224295353:1705028111:35080094:35080094:2146784559:18"
+              },
+              "constraint": {
+                "opMenu": {
+                  "group-cell-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "center",
+                "marginBottom": "10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "10px",
+                "textAlign": "center"
+              },
+              "tplId": "paper-cp:layout/row1-r1c5"
+            },
+            "col1": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-hG149R3Xpq9uumUK",
+                    "constraint": {
+                      "opMenu": {
+                        "text-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "pose": {},
+                    "style": {},
+                    "tplId": "paper-cp:header/1-txt-normal"
+                  },
+                  "txt1": {
+                    "constraint": {},
+                    "style": {
+                      "backgroundColor": "",
+                      "letterSpacing": "2px",
+                      "textAlign": "justify"
+                    },
+                    "text": "<p><span style=\"color: rgb(255, 255, 255); font-size: 114.286%;\"><strong><span style=\"color: rgb(255, 255, 255);\">学术信息</span></strong></span><br></p>",
+                    "type": "text"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "center",
+                "backgroundImage": "linear-gradient(140deg,rgba(50, 151, 248,1) 0%, rgba(28, 96, 248,1) 34%, rgba(30,101,248,1) 66%, rgba(50, 151, 248,1) 100%)",
+                "borderBottomColor": "rgb(255,255,255)",
+                "borderBottomLeftRadius": "10px",
+                "borderBottomRightRadius": "10px",
+                "borderBottomStyle": "solid",
+                "borderBottomWidth": "2px",
+                "borderLeftColor": "rgb(255,255,255)",
+                "borderLeftStyle": "solid",
+                "borderLeftWidth": "2px",
+                "borderRightColor": "rgb(255,255,255)",
+                "borderRightStyle": "solid",
+                "borderRightWidth": "2px",
+                "borderTopColor": "rgb(255,255,255)",
+                "borderTopLeftRadius": "10px",
+                "borderTopRightRadius": "10px",
+                "borderTopStyle": "solid",
+                "borderTopWidth": "2px",
+                "boxShadow": "rgb(189, 189, 189) 0 0 3px 0, rgb(54,243,241) 2px 2px 5px 0 inset, rgb(8,63,186) -2px -2px 5px 0 inset",
+                "flex": "0 1 auto",
+                "height": "auto",
+                "maxWidth": "100%",
+                "minWidth": "0",
+                "overflow": "hidden",
+                "paddingBottom": "10px",
+                "paddingLeft": "20px",
+                "paddingRight": "20px",
+                "paddingTop": "10px",
+                "verticalAlign": "middle",
+                "width": "auto",
+                "zIndex": 1
+              },
+              "type": "group"
+            },
+            "col2": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-NlyzTVm15jtjhlCD",
+                    "anim": null,
+                    "constraint": {
+                      "opMenu": {
+                        "group-cell-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "linkFrame": false,
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "tnWorkaroundIOSPerspectiveFlat": null,
+                      "width": null
+                    },
+                    "style": {
+                      "backgroundImage": null,
+                      "justifyContent": "flex-start",
+                      "marginBottom": "0",
+                      "marginLeft": "0",
+                      "marginRight": "0",
+                      "marginTop": "0",
+                      "textAlign": "left"
+                    },
+                    "tplId": "paper-cp:layout/fixed"
+                  },
+                  "col1": {
+                    "anim": null,
+                    "constraint": {
+                      "childLayout": "static",
+                      "fixedSize": true,
+                      "frozen": true
+                    },
+                    "items": [],
+                    "link": null,
+                    "linkFrame": false,
+                    "style": {
+                      "backgroundColor": "rgb(222, 239, 255)",
+                      "baseViewHeight": "240px",
+                      "borderBottomLeftRadius": "10px",
+                      "borderBottomRightRadius": "10px",
+                      "borderTopLeftRadius": "10px",
+                      "borderTopRightRadius": "10px",
+                      "boxShadow": "",
+                      "flex": null,
+                      "height": "30px",
+                      "maxWidth": null,
+                      "minWidth": null,
+                      "tnYzkFontUsageId": null,
+                      "width": "5px"
+                    },
+                    "type": "group"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "center",
+                "flex": "0 0 0%",
+                "height": "auto",
+                "lineHeight": "0",
+                "maxWidth": null,
+                "minWidth": null,
+                "paddingBottom": "0",
+                "paddingLeft": "8px",
+                "paddingRight": "0",
+                "paddingTop": "0",
+                "verticalAlign": "middle",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "type": "group"
+            },
+            "col3": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-FMWr2fgT91PmsP4p",
+                    "anim": null,
+                    "constraint": {
+                      "opMenu": {
+                        "group-cell-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "linkFrame": false,
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "tnWorkaroundIOSPerspectiveFlat": null,
+                      "width": null
+                    },
+                    "style": {
+                      "backgroundImage": null,
+                      "justifyContent": "flex-start",
+                      "marginBottom": "0",
+                      "marginLeft": "0",
+                      "marginRight": "0",
+                      "marginTop": "0",
+                      "textAlign": "left"
+                    },
+                    "tplId": "paper-cp:layout/fixed"
+                  },
+                  "col1": {
+                    "anim": null,
+                    "constraint": {
+                      "childLayout": "static",
+                      "fixedSize": true,
+                      "frozen": true
+                    },
+                    "items": [],
+                    "link": null,
+                    "linkFrame": false,
+                    "style": {
+                      "backgroundColor": "rgb(222, 239, 255)",
+                      "baseViewHeight": "240px",
+                      "borderBottomLeftRadius": "10px",
+                      "borderBottomRightRadius": "10px",
+                      "borderTopLeftRadius": "10px",
+                      "borderTopRightRadius": "10px",
+                      "boxShadow": "",
+                      "flex": null,
+                      "height": "20px",
+                      "maxWidth": null,
+                      "minWidth": null,
+                      "tnYzkFontUsageId": null,
+                      "width": "5px"
+                    },
+                    "type": "group"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "center",
+                "flex": "0 0 0%",
+                "height": "auto",
+                "lineHeight": "0",
+                "maxWidth": null,
+                "minWidth": null,
+                "paddingBottom": "0",
+                "paddingLeft": "5px",
+                "paddingRight": "0",
+                "paddingTop": "0",
+                "verticalAlign": "middle",
+                "width": "auto"
+              },
+              "type": "group"
+            },
+            "col4": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-ByYt25aYv6YglVkT",
+                    "aux": {
+                      "bgc1": {
+                        "supportGradient": "true",
+                        "type": "color",
+                        "value": "linear-gradient(140deg,rgba(50, 151, 248,1) 0%, rgba(28, 96, 248,1) 34%, rgba(30,101,248,1) 66%, rgba(50, 151, 248,1) 100%)"
+                      }
+                    },
+                    "constraint": {
+                      "opMenu": {
+                        "crop-image-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "width": null
+                    },
+                    "style": {
+                      "margin": "0.5em 0"
+                    },
+                    "tplId": "paper-cp:other/000-base-line"
+                  },
+                  "line1": {
+                    "style": {
+                      "height": "1px"
+                    },
+                    "type": "shape"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "center",
+                "flex": "100 100 0%",
+                "height": "auto",
+                "maxWidth": null,
+                "minWidth": null,
+                "paddingBottom": "0",
+                "paddingLeft": "5px",
+                "paddingRight": "5px",
+                "paddingTop": "0",
+                "verticalAlign": "middle",
+                "width": "auto"
+              },
+              "type": "group"
+            },
+            "col5": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-AicDhGg5hTS545Rp",
+                    "anim": null,
+                    "constraint": {
+                      "opMenu": {
+                        "group-cell-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "linkFrame": false,
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "tnWorkaroundIOSPerspectiveFlat": null,
+                      "width": null
+                    },
+                    "style": {
+                      "backgroundImage": null,
+                      "justifyContent": "flex-end",
+                      "marginBottom": "0",
+                      "marginLeft": "0",
+                      "marginRight": "0",
+                      "marginTop": "0",
+                      "textAlign": "right"
+                    },
+                    "tplId": "paper-cp:layout/fixed"
+                  },
+                  "col1": {
+                    "anim": null,
+                    "constraint": {
+                      "childLayout": "static",
+                      "fixedSize": true,
+                      "frozen": true
+                    },
+                    "items": [],
+                    "link": null,
+                    "linkFrame": false,
+                    "style": {
+                      "backgroundImage": "linear-gradient(140deg,rgba(50, 151, 248,1) 0%, rgba(28, 96, 248,1) 34%, rgba(30,101,248,1) 66%, rgba(50, 151, 248,1) 100%)",
+                      "baseViewHeight": "240px",
+                      "borderBottomColor": "rgb(62, 62, 62)",
+                      "borderBottomLeftRadius": "100%",
+                      "borderBottomRightRadius": "100%",
+                      "borderBottomStyle": "none",
+                      "borderBottomWidth": "0px",
+                      "borderLeftColor": "rgb(62, 62, 62)",
+                      "borderLeftStyle": "none",
+                      "borderLeftWidth": "0px",
+                      "borderRightColor": "rgb(62, 62, 62)",
+                      "borderRightStyle": "none",
+                      "borderRightWidth": "0px",
+                      "borderTopColor": "rgb(62, 62, 62)",
+                      "borderTopLeftRadius": "100%",
+                      "borderTopRightRadius": "100%",
+                      "borderTopStyle": "none",
+                      "borderTopWidth": "0px",
+                      "boxShadow": "",
+                      "flex": null,
+                      "height": "5px",
+                      "maxWidth": null,
+                      "minWidth": null,
+                      "tnYzkFontUsageId": null,
+                      "width": "5px"
+                    },
+                    "type": "group"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "center",
+                "flex": "0 0 0%",
+                "height": "auto",
+                "lineHeight": "0",
+                "maxWidth": null,
+                "minWidth": null,
+                "verticalAlign": "middle",
+                "width": "auto"
+              },
+              "type": "group"
+            }
+          },
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-kyqXVvJgZJV7Sd2S",
+              "_viewport": {
+                "HEIGHT": 563,
+                "WIDTH": 375,
+                "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+                "_FRONTVIEW": "206944488:1705028111:52201167:52201167:2130613374:11"
+              },
+              "constraint": {
+                "opMenu": {
+                  "group-cell-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "tnWorkaroundIOSPerspectiveFlat": null,
+                "width": null
+              },
+              "style": {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "flex-start",
+                "marginBottom": "10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "0",
+                "textAlign": "left",
+                "transform": "translate3d(-15px, 0px, 0px)"
+              },
+              "tplId": "paper-cp:layout/row1-r1c1"
+            },
+            "col1": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-XwX41ccQlrgfbQ64",
+                    "anim": null,
+                    "autoCompose": {
+                      "initialType": "h1"
+                    },
+                    "constraint": {
+                      "opMenu": {
+                        "text-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "linkFrame": false,
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "width": null
+                    },
+                    "style": {
+                      "backgroundImage": null
+                    },
+                    "tplId": "paper-cp:header/1-txt-normal"
+                  },
+                  "txt1": {
+                    "anim": null,
+                    "constraint": {},
+                    "link": null,
+                    "linkFrame": false,
+                    "style": {
+                      "color": "rgb(255,255,255)",
+                      "fontSize": "114.2857%",
+                      "textAlign": "left",
+                      "tnYzkFontUsageId": null,
+                      "overflowWrap": "anywhere"
+                    },
+                    "text": "<p>&nbsp;<strong><span style>【本期资讯标题】</span></strong></p>",
+                    "type": "text"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "flex-start",
+                "backgroundColor": "rgb(137,177,230)",
+                "flex": "0 1 auto",
+                "height": "auto",
+                "maxWidth": "100%",
+                "minWidth": "0",
+                "paddingBottom": "1px",
+                "paddingLeft": "12px",
+                "paddingRight": "12px",
+                "paddingTop": "1px",
+                "verticalAlign": "top",
+                "width": "auto"
+              },
+              "type": "group"
+            }
+          },
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-urlWVRTri2FQw8Zk",
+              "_viewport": {
+                "WIDTH": 415,
+                "_BACKVIEW": "196722135:1760877477:82871280:82871280:68752093:8",
+                "_FRONTVIEW": "228524426:1705028111:47595437:47595437:2134125852:11"
+              },
+              "constraint": {
+                "opMenu": {
+                  "text-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "marginBottom": "10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "0"
+              },
+              "tplId": "paper-cp:header/1-txt-normal"
+            },
+            "txt1": {
+              "constraint": {},
+              "style": {
+                "color": "rgb(15,19,48)",
+                "fontSize": "100.0000%",
+                "textAlign": "justify"
+              },
+              "text": "<p><span style=\"color: #89b1e6;\">✔</span> 请填写本期资讯内容</p>",
+              "type": "text"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "flex-start",
+          "backgroundColor": "rgba(137, 177, 230, 0.1)",
+          "flex": "0 0 auto",
+          "padding": "27px 27px 27px 27px",
+          "verticalAlign": "top",
+          "width": "100.00%"
+        },
+        "type": "group"
+      }
+    },
+    "transition_review": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-buB07yBGgkO5TUFO",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "178211944:1787343911:97940047:97940047:88073058:13",
+          "_FRONTVIEW": "244064990:1705028111:29695225:29695225:2082934344:17"
+        },
+        "constraint": {
+          "opMenu": {
+            "text-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {},
+        "tplId": "paper-cp:header/1-txt-normal"
+      },
+      "txt1": {
+        "constraint": {
+          "editingCellType": "text-code"
+        },
+        "style": {
+          "textAlign": "justify"
+        },
+        "text": "<pre class=\"code-snippet\" data-lang=\"c\"><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;看完了上周信息\\n&quot;</span>)</span></code><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;再来看看下周的重要信息吧\\n&quot;</span>);</span></code></pre>",
+        "type": "text"
+      }
+    },
+    "shows_panel": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-iqCYN9CrHhm1fE2l",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+          "_FRONTVIEW": "b3:156888254470159:7593859026:410409019:2221316772:2797342642:32:1a1c553eb3cf3c0271efb1677cca860cb9da7574"
+        },
+        "constraint": {
+          "opMenu": {
+            "group-cell-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "justifyContent": "flex-start",
+          "marginBottom": "10px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "10px",
+          "textAlign": "left"
+        },
+        "tplId": "paper-cp:layout/row1-r1c1"
+      },
+      "col1": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-RdK6EEDMINkMPTEr",
+              "_viewport": {
+                "HEIGHT": 563,
+                "WIDTH": 375,
+                "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+                "_FRONTVIEW": "b3:62149575537985:5374271320:182479053:1036796335:2574659858:32:1a1c553eb3cf3c0271efb1677cca860cb9da7574"
+              },
+              "constraint": {
+                "opMenu": {
+                  "group-cell-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "tnWorkaroundIOSPerspectiveFlat": null,
+                "width": null
+              },
+              "style": {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "flex-start",
+                "marginBottom": "10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "0",
+                "textAlign": "left",
+                "transform": "translate3d(-15px, 0px, 0px)"
+              },
+              "tplId": "paper-cp:layout/row1-r1c1"
+            },
+            "col1": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-iUSbtPQp83tjEMX5",
+                    "anim": null,
+                    "autoCompose": {
+                      "initialType": "h1"
+                    },
+                    "constraint": {
+                      "opMenu": {
+                        "text-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "linkFrame": false,
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "width": null
+                    },
+                    "style": {
+                      "backgroundImage": null
+                    },
+                    "tplId": "paper-cp:header/1-txt-normal"
+                  },
+                  "txt1": {
+                    "anim": null,
+                    "constraint": {},
+                    "link": null,
+                    "linkFrame": false,
+                    "style": {
+                      "color": "rgb(255,255,255)",
+                      "fontSize": "114.2857%",
+                      "tnYzkFontUsageId": null
+                    },
+                    "text": "<p><strong>下周百讲演出速览</strong></p>",
+                    "type": "text"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "flex-start",
+                "backgroundColor": "rgb(137,177,230)",
+                "flex": "0 0 auto",
+                "height": "auto",
+                "maxWidth": "100%",
+                "minWidth": "5%",
+                "paddingBottom": "1px",
+                "paddingLeft": "12px",
+                "paddingRight": "12px",
+                "paddingTop": "1px",
+                "verticalAlign": "top",
+                "width": "auto"
+              },
+              "type": "group"
+            }
+          },
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-LaSd4ERYfEcR5xfl",
+              "_viewport": {
+                "WIDTH": 415,
+                "_BACKVIEW": "177666529:1695536697:98551750:98551750:87447275:10",
+                "_FRONTVIEW": "b3:36211108344179:7176471709:3984351554:3791890831:2458484017:22:936d6b00aadf8ffe36f04be0251c7ebd6975f65f"
+              },
+              "constraint": {
+                "opMenu": {
+                  "text-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "marginTop": "10px",
+                "minHeight": "24px",
+                "width": "100%"
+              },
+              "tplId": "paper-cp:header/1-txt-normal"
+            },
+            "txt1": {
+              "constraint": {},
+              "style": {
+                "textAlign": "left",
+                "overflowWrap": "break-word"
+              },
+              "text": "<p><br></p>",
+              "type": "text"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "flex-start",
+          "backgroundColor": "rgba(137, 177, 230, 0.1)",
+          "flex": "0 0 auto",
+          "padding": "27px 27px 27px 27px",
+          "verticalAlign": "top",
+          "width": "100.00%"
+        },
+        "type": "group"
+      }
+    },
+    "transition_notice": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-JbSeXSSdYFhTXwQ9",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "178211944:1787343911:97940047:97940047:88073058:13",
+          "_FRONTVIEW": "249571315:1705028111:27859412:27859412:2085292901:14"
+        },
+        "constraint": {
+          "opMenu": {
+            "text-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {},
+        "tplId": "paper-cp:header/1-txt-normal"
+      },
+      "txt1": {
+        "constraint": {
+          "editingCellType": "text-code"
+        },
+        "style": {
+          "textAlign": "justify"
+        },
+        "text": "<pre class=\"code-snippet\" data-lang=\"c\"><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;看完了后续信息\\n&quot;</span>)</span></code><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;记得查收重要提示哦\\n&quot;</span>);</span></code></pre>",
+        "type": "text"
+      }
+    },
+    "notice_panel": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-99UQsEr4A90GalAF",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+          "_FRONTVIEW": "b3:79335926768863:6775558176:462247141:3047026220:3896012915:32:1a1c553eb3cf3c0271efb1677cca860cb9da7574"
+        },
+        "constraint": {
+          "opMenu": {
+            "group-cell-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "justifyContent": "flex-start",
+          "marginBottom": "10px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "10px",
+          "textAlign": "left"
+        },
+        "tplId": "paper-cp:layout/row1-r1c1"
+      },
+      "col1": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-ZS9w6LfB1jYIumi6",
+              "_viewport": {
+                "HEIGHT": 563,
+                "WIDTH": 375,
+                "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+                "_FRONTVIEW": "b3:145246110947883:6866257649:1548099821:1824513534:316722593:36:1a1c553eb3cf3c0271efb1677cca860cb9da7574"
+              },
+              "constraint": {
+                "opMenu": {
+                  "group-cell-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "tnWorkaroundIOSPerspectiveFlat": null,
+                "width": null
+              },
+              "style": {
+                "display": "flex",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "justifyContent": "flex-start",
+                "marginBottom": "10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "0",
+                "textAlign": "left",
+                "transform": "translate3d(-15px, 0px, 0px)"
+              },
+              "tplId": "paper-cp:layout/row1-r1c1"
+            },
+            "col1": {
+              "constraint": {
+                "childLayout": "static"
+              },
+              "items": [
+                {
+                  "_comp": {
+                    "$$tnEditingAttr": {
+                      "hidden": false,
+                      "locked": false,
+                      "selected": false
+                    },
+                    "$$tnPresentAttr": {},
+                    "_$uuid": "comp-uSWEf1aP50QjUhJR",
+                    "constraint": {
+                      "opMenu": {
+                        "text-merged": true
+                      },
+                      "pose": {
+                        "resize": "h"
+                      }
+                    },
+                    "pose": {
+                      "height": null,
+                      "position": "static",
+                      "tnWorkaroundIOSPerspectiveFlat": null,
+                      "width": null
+                    },
+                    "style": {
+                      "justifyContent": "flex-start",
+                      "marginBottom": "0",
+                      "marginLeft": "0",
+                      "marginRight": "0",
+                      "marginTop": "0",
+                      "textAlign": "left",
+                      "transform": "translate3d(-5px, 0px, 0px)"
+                    },
+                    "tplId": "paper-cp:header/1-txt-normal"
+                  },
+                  "txt1": {
+                    "constraint": {},
+                    "style": {
+                      "color": "rgb(255,255,255)",
+                      "fontSize": "114.2857%",
+                      "textAlign": "justify"
+                    },
+                    "text": "<p><strong>【本期提示标题】</strong></p>",
+                    "type": "text"
+                  }
+                }
+              ],
+              "style": {
+                "alignSelf": "flex-start",
+                "backgroundColor": "rgb(137,177,230)",
+                "flex": "0 0 auto",
+                "height": "auto",
+                "maxWidth": "100%",
+                "minWidth": "5%",
+                "paddingBottom": "1px",
+                "paddingLeft": "12px",
+                "paddingRight": "12px",
+                "paddingTop": "1px",
+                "verticalAlign": "top",
+                "width": "auto"
+              },
+              "type": "group"
+            }
+          },
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-Wq8Fy3MZ0RErzcgF",
+              "_viewport": {
+                "WIDTH": 415,
+                "_BACKVIEW": "196722135:1760877477:82871280:82871280:68752093:8",
+                "_FRONTVIEW": "b3:198622335923523:6593607227:2312463111:1161010485:2529162563:28:cb45f1d97b18e4ae397b773b59383c2d5d5d032a"
+              },
+              "constraint": {
+                "opMenu": {
+                  "text-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "marginBottom": "10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "0"
+              },
+              "tplId": "paper-cp:header/1-txt-normal"
+            },
+            "txt1": {
+              "constraint": {},
+              "style": {
+                "color": "rgb(15,19,48)",
+                "textAlign": "justify"
+              },
+              "text": "<p>请填写本期提示</p>",
+              "type": "text"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "flex-start",
+          "backgroundColor": "rgba(137, 177, 230, 0.1)",
+          "flex": "0 0 auto",
+          "padding": "27px 27px 27px 27px",
+          "verticalAlign": "top",
+          "width": "100.00%"
+        },
+        "type": "group"
+      }
+    },
+    "contact": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-s6HBkdjB7uqBGcOj",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+          "_FRONTVIEW": "244254341:1705028111:29767842:29767842:2082744851:14"
+        },
+        "constraint": {
+          "opMenu": {
+            "group-cell-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "display": "flex",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "justifyContent": "flex-start",
+          "marginBottom": "10px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "0",
+          "textAlign": "left"
+        },
+        "tplId": "paper-cp:layout/row1-r1c1"
+      },
+      "col1": {
+        "constraint": {
+          "childLayout": "static"
+        },
+        "items": [
+          {
+            "_comp": {
+              "$$tnEditingAttr": {
+                "hidden": false,
+                "locked": false,
+                "selected": false
+              },
+              "$$tnPresentAttr": {},
+              "_$uuid": "comp-FvYWR5O1Njmc2ThA",
+              "_viewport": {
+                "HEIGHT": 563,
+                "WIDTH": 375,
+                "_BACKVIEW": "170808306:1793311950:90664405:90664405:93256952:10",
+                "_FRONTVIEW": "255796176:1705028111:7740919:7740919:2106855238:11"
+              },
+              "constraint": {
+                "opMenu": {
+                  "text-merged": true
+                },
+                "pose": {
+                  "resize": "h"
+                }
+              },
+              "pose": {
+                "height": null,
+                "position": "static",
+                "width": null
+              },
+              "style": {
+                "marginBottom": "-10px",
+                "marginLeft": "0",
+                "marginRight": "0",
+                "marginTop": "-10px"
+              },
+              "tplId": "paper-cp:header/1-txt-normal"
+            },
+            "txt1": {
+              "constraint": {
+                "wordBreakMode": "breakAll"
+              },
+              "style": {
+                "color": "rgb(15,19,48)",
+                "padding": "0px 0px 0px 0px",
+                "textAlign": "justify"
+              },
+              "text": "<p><strong>// 【联系我们】</strong></p><p>欢迎通过学生会公共邮箱反馈意见建议和权益诉求。</p><p><strong>学生会公共邮箱：</strong>weekly@example.com</p>",
+              "type": "text"
+            }
+          }
+        ],
+        "style": {
+          "alignSelf": "flex-start",
+          "backgroundColor": "rgba(137, 177, 230, 0.1)",
+          "borderBottomColor": "rgb(137,177,230)",
+          "borderBottomLeftRadius": "0px",
+          "borderBottomRightRadius": "0px",
+          "borderBottomStyle": "solid",
+          "borderBottomWidth": "1px",
+          "borderLeftColor": "rgb(137,177,230)",
+          "borderLeftStyle": "solid",
+          "borderLeftWidth": "1px",
+          "borderRightColor": "rgb(137,177,230)",
+          "borderRightStyle": "solid",
+          "borderRightWidth": "1px",
+          "borderTopColor": "rgb(137,177,230)",
+          "borderTopLeftRadius": "0px",
+          "borderTopRightRadius": "0px",
+          "borderTopStyle": "solid",
+          "borderTopWidth": "1px",
+          "flex": "0 0 auto",
+          "padding": "27px 27px 27px 27px",
+          "verticalAlign": "top",
+          "width": "100.00%"
+        },
+        "type": "group"
+      }
+    },
+    "code_outro": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-9Wy0tYkQMClMS2Cb",
+        "_viewport": {
+          "HEIGHT": 563,
+          "WIDTH": 375,
+          "_BACKVIEW": "178211944:1787343911:97940047:97940047:88073058:13",
+          "_FRONTVIEW": "191085322:1705028111:69895469:69895469:2043189148:13"
+        },
+        "constraint": {
+          "opMenu": {
+            "text-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "marginBottom": "-10px",
+          "marginLeft": "0",
+          "marginRight": "0",
+          "marginTop": "20px",
+          "opacity": 1
+        },
+        "tplId": "paper-cp:header/1-txt-normal"
+      },
+      "txt1": {
+        "constraint": {
+          "editingCellType": "text-code"
+        },
+        "style": {
+          "textAlign": "justify"
+        },
+        "text": "<pre class=\"code-snippet\" data-lang=\"cpp\"><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__built_in\">printf</span>(<span class=\"code-snippet__string\">&quot;我们下期再见!&quot;</span>);</span></code><code><span class=\"code-snippet_outer\"> &nbsp;<span class=\"code-snippet__keyword\">return</span> <span class=\"code-snippet__number\">0</span>;</span></code><code><span class=\"code-snippet_outer\">}</span></code></pre>",
+        "type": "text"
+      }
+    },
+    "credits": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-d5RzoxBrePgSZWmg",
+        "_viewport": {
+          "WIDTH": 415,
+          "_BACKVIEW": "191668221:1726970138:69575130:69575130:80490743:9",
+          "_FRONTVIEW": "267642492:1705028111:12245083:12245083:2102971114:13"
+        },
+        "constraint": {
+          "opMenu": {
+            "text-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {},
+        "tplId": "paper-cp:header/1-txt-normal"
+      },
+      "txt1": {
+        "constraint": {},
+        "style": {
+          "paragraphMargin": 8,
+          "textAlign": "justify"
+        },
+        "text": "<p style=\"text-align: right;\">北京大学信息科学技术学院学生会</p>",
+        "type": "text"
+      }
+    },
+    "footer": {
+      "_comp": {
+        "$$tnEditingAttr": {
+          "hidden": false,
+          "locked": false,
+          "selected": false
+        },
+        "$$tnPresentAttr": {},
+        "_$uuid": "comp-Gt9bIq6UUQ54JXmm",
+        "_viewport": {
+          "WIDTH": 415,
+          "_BACKVIEW": "191668221:1726970138:69575130:69575130:80490743:9",
+          "_FRONTVIEW": "259233930:1705028111:3843757:3843757:2111353884:13"
+        },
+        "constraint": {
+          "opMenu": {
+            "crop-image-merged": true
+          },
+          "pose": {
+            "resize": "h"
+          }
+        },
+        "pose": {
+          "height": null,
+          "position": "static",
+          "width": null
+        },
+        "style": {
+          "lineHeight": "0",
+          "marginBottom": "10px",
+          "marginTop": "10px",
+          "textAlign": "center"
+        },
+        "tplId": "paper-cp:image/img-autowidth"
+      },
+      "img1": {
+        "src": "//img.xiumi.us/xmi/ua/VJQg/i/75a0fd47026ae121c7d5bc7509a4ff8e-sz_86682.jpg?x-oss-process=style/xm",
+        "style": {
+          "width": "100%"
+        },
+        "type": "image"
+      }
+    }
+  },
+  "notes": {
+    "review": "在固定浅蓝色组合面板内按 [类别标题, 资讯标题, 资讯正文] 重复生成",
+    "upcoming": "同上；栏目只由当前资料确定",
+    "notices": "有提醒时才插入标题 + 提示正文",
+    "performances": "百讲演出为每期必备的手动填写区；固定位置保留标题与浅蓝框，仅有一个空白原生文本组件。",
+    "preferred_source": "用户上传的 26春第十周 Xiumi v5 原生抓取，非旧版 HTML",
+    "legacy_reference": "旧版 v1 仅参考常用栏目、署名和每周更新约定，不混用 Bridge v3",
+    "usage_guide": "README.md and component-guide.md; all 14 native seeds documented"
+  }
+}

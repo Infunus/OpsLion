@@ -1,7 +1,0 @@
-{
-  "repository": "https://github.com/rachelos/we-mp-rss",
-  "revision": "d8feb6a42c6773d7374e03c487d3ae3426084af8",
-  "version": "1.5.3",
-  "license": "MIT",
-  "files": "Integration patches only. The complete upstream source is installed separately; runtime data and credentials are excluded."
-}

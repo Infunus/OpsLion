@@ -1,0 +1,39 @@
+{
+  "title": "Hello Week丨简短期（结构示例，待替换）",
+  "links_enabled": true,
+  "submission": {
+    "enabled": false
+  },
+  "review": [],
+  "upcoming": [
+    {
+      "name": "通知",
+      "items": [
+        {
+          "title": "【待替换】本期唯一的重要通知",
+          "fields": [
+            {
+              "label": "截止时间",
+              "value": "【以本期资料为准】"
+            }
+          ],
+          "link": {
+            "label": "原文标题（待替换）",
+            "url": ""
+          }
+        }
+      ]
+    }
+  ],
+  "notices": [],
+  "contact": {
+    "enabled": true,
+    "email": "weekly@example.com"
+  },
+  "credits": {
+    "organization": "北京大学信息科学技术学院学生会",
+    "copy": "",
+    "layout": "",
+    "proofread": ""
+  }
+}
